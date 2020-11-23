@@ -18,7 +18,7 @@ namespace ExelImportUtil
 
             EpplusImportFile epplusImportFile = new EpplusImportFile();
             byte[] bin = File.ReadAllBytes("C:/Users/vladyslav.haliaha/Desktop/Catalog/Mobile.xlsx");
-            var phonesDtos = epplusImportFile.GetEntityExel<MobilePhonesExcelDTO>(bin); //GetMobilePhones(bin);
+            var phonesDtos = epplusImportFile.GetEntityExel<MobilePhonesExcelDTO>(bin);
 
             var phones = phonesDtos.Select(p => new MobilePhones
             {

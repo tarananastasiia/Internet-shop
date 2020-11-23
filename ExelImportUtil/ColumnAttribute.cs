@@ -7,13 +7,13 @@ namespace ExelImportUtil
 {
     public class ColumnAttribute :Attribute 
     {
-        public int Column { get; set; }
+        public string Column { get; set; }
 
         public Type ParserType { get; set; }
 
         public ISimpleParser Parser => (ISimpleParser)Activator.CreateInstance(ParserType); 
 
-        public ColumnAttribute(int column)
+        public ColumnAttribute(string column)
         {
             Column = column;
         }
