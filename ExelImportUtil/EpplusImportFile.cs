@@ -52,11 +52,11 @@ namespace ExelImportUtil
             using (MemoryStream stream = new MemoryStream(bin))
             using (ExcelPackage excelPackage = new ExcelPackage(stream))
             {
-                ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.First();
+                ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets[typeof(T).GetCustomAttribute<SheetAttribute>().Sheet];       
                 Dictionary<int, PropertyInfo> dictColumnAndProps = propsWithAttribute.ToDictionary(p =>
                 {
-                    var a = NumberColumn(p.GetCustomAttribute<ColumnAttribute>().Column, worksheet);
-                    return a;
+                    var columnNumber = NumberColumn(p.GetCustomAttribute<ColumnAttribute>().Column, worksheet);
+                    return columnNumber;
                 }, p => p);
 
                 List<T> mobilePhones = new List<T>();

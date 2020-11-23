@@ -5,13 +5,14 @@ using System.Text;
 
 namespace ExelImportUtil
 {
-    public class ColumnAttribute :Attribute 
+    [AttributeUsage(AttributeTargets.Property)]
+    public class ColumnAttribute : Attribute
     {
         public string Column { get; set; }
 
         public Type ParserType { get; set; }
 
-        public ISimpleParser Parser => (ISimpleParser)Activator.CreateInstance(ParserType); 
+        public ISimpleParser Parser => (ISimpleParser)Activator.CreateInstance(ParserType);
 
         public ColumnAttribute(string column)
         {

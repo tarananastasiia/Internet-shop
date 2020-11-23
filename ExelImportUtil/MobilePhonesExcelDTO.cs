@@ -6,9 +6,9 @@ using System.Text;
 
 namespace ExelImportUtil
 {
+    [Sheet("Products")]
     public class MobilePhonesExcelDTO
     {
-      
         public int Id { get; set; } 
 
         [Column("Категория", ParserType = typeof(StringParser))]
