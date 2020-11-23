@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using SiteMy.Models;
+using SiteMy.Services;
 
 namespace SiteMy.Controllers
 {
@@ -13,16 +11,12 @@ namespace SiteMy.Controllers
     [EnableCors("AllowAllOrigin")]
     public class FirstPageController : Controller
     {
-        ApplicationContext _context;
-        public FirstPageController(ApplicationContext context)
+        EpplusFileReadService epplusFileReadService;
+        public void Get()
         {
-            _context = context;
-        }
+            List<string> mobilePhones = new List<string>();
+            epplusFileReadService.GetMobilePhones(mobilePhones);
 
-        [HttpGet]
-        public IActionResult Get()
-        {
-            return Ok();
         }
     }
 }

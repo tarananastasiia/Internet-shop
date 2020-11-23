@@ -37,12 +37,11 @@ namespace SiteMy
                     builder.AllowAnyHeader();
                 });
             });
-
-
-
             services.AddDbContext<ApplicationContext>(options =>
-            options.UseSqlServer(
-                Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationContext>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -54,7 +53,6 @@ namespace SiteMy
             app.UseRouting();
             app.UseCors();
             app.UseAuthentication();
-            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

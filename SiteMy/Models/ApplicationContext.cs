@@ -10,9 +10,11 @@ namespace SiteMy.Models
     public class ApplicationContext : IdentityDbContext<User>
     {
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
-            : base(options)
+           : base(options)
         {
             Database.EnsureCreated();
         }
+        public DbSet<MobilePhones> MobilePhones { get; set; }
+        public DbSet<LinkToPhoto> Links { get; set; }
     }
 }
