@@ -1,4 +1,5 @@
 ﻿using ExelImportUtil.Parcers.Impl;
+using ExelImportUtil.Validation.Param;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,27 +12,27 @@ namespace ExelImportUtil
     {
         public int Id { get; set; } 
 
-        [Column("Категория", ParserType = typeof(StringParser))]
+        [ColumnName("Категория", ParserType = typeof(StringParser), ValidType = typeof(StringValid))]
         public string Category { get; set; }
-        [Column("Артикул", ParserType = typeof(IntParser))]
+        [ColumnName("Артикул", ParserType = typeof(IntParser), ValidType = typeof(IntValid))]
         public int VendorCode { get; set; }
-        [Column("Артикул модификации", ParserType = typeof(StringParser))]
+        [ColumnName("Артикул модификации", ParserType = typeof(StringParser), ValidType = typeof(StringValid))]
         public string ModificationArticle { get; set; }
-        [Column("Имя товара", ParserType = typeof(StringParser))]
+        [ColumnName("Имя товара", ParserType = typeof(StringParser), ValidType = typeof(StringValid))]
         public string Name { get; set; }
-        [Column("Цена", ParserType = typeof(DoubleParser))]
+        [ColumnName("Цена", ParserType = typeof(DoubleParser), ValidType = typeof(DoubleValid))]
         public double Price { get; set; }
-        [Column("Количество", ParserType = typeof(IntParser))]
+        [ColumnName("Количество", ParserType = typeof(IntParser), ValidType = typeof(IntValid))]
         public int Quantity { get; set; }
-        [Column("Описание", ParserType = typeof(StringParser))]
+        [ColumnName("Описание", ParserType = typeof(StringParser), ValidType = typeof(StringValid))]
         public string Description { get; set; }
-        [Column("Производитель", ParserType = typeof(StringParser))]
+        [ColumnName("Производитель", ParserType = typeof(StringParser), ValidType = typeof(StringValid))]
         public string Manufacturer { get; set; }
-        [Column("Фото", ParserType = typeof(StringParser))]
+        [ColumnName("Фото", ParserType = typeof(StringParser), ValidType = typeof(StringValid))]
         public string Photo { get; set; }
-        [Column("Ссылки на фото", ParserType = typeof(ListParser))]
+        [ColumnName("Ссылки на фото", ParserType = typeof(ListParser), ValidType = typeof(ListValid))]
         public List<string> LinkToPhoto { get; set; }
-        [Column("Цвет", ParserType = typeof(StringParser))]
+        [ColumnName("Цвет", ParserType = typeof(StringParser), ValidType = typeof(StringValid))]
         public string Colour { get; set; }
 
         public string testNonAttribute { get; set; }
