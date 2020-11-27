@@ -6,9 +6,14 @@ namespace ExelImportUtil.Validation.Param
 {
     public class StringValid : IValidator
     {
-        public bool IsValid(string param)
+        public ErrorsMessages Validation(string param, ErrorsMessages errors)
         {
-            return true;
+            errors.IsNotError = true;
+
+            return errors;
         }
+        //public ErrorsMessages IsNotError(string param, ErrorsMessages errors)
+        //{
+        //}
     }
 }

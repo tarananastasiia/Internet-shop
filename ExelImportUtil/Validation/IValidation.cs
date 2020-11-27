@@ -1,4 +1,5 @@
-﻿using OfficeOpenXml;
+﻿using ExelImportUtil.Validation;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,6 +9,6 @@ namespace ExelImportUtil
 {
     public interface IValidator
     {
-        bool IsValid(string param);
+        ErrorsMessages Validation(string param,ErrorsMessages errors);
     }
 }

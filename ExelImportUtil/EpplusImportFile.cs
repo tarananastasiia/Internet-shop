@@ -10,6 +10,7 @@ using System.Text;
 using System.Drawing;
 using DocumentFormat.OpenXml.Drawing;
 using OfficeOpenXml.Style;
+using ExelImportUtil.Validation;
 
 namespace ExelImportUtil
 {
@@ -70,23 +71,21 @@ namespace ExelImportUtil
 
                     foreach (var keyValue in dictColumnAndProps)
                     {
-                        var a = keyValue.Value.GetCustomAttribute<ColumnNameAttribute>().Validator.IsValid(worksheet.Cells[i, keyValue.Key].Value?.ToString());
-                        if (a == true)
+                        ErrorsMessages errors = new ErrorsMessages();
+                        keyValue.Value.GetCustomAttribute<ColumnNameAttribute>().Validator.Validation(worksheet.Cells[i, keyValue.Key].Value?.ToString(), errors);
+                        if (errors.IsNotError == true)
                         {
-                            var parcer = keyValue.Value.GetCustomAttribute<ColumnNameAttribute>().Parser;
-                            var value = parcer.Parce(worksheet.Cells[i, keyValue.Key].Value?.ToString());
-                            keyValue.Value.SetValue(dto, value);
+                            var parcer = keyValue.Value.GetCustomAttribute<ColumnNameAttribute>().Parser.Parce(worksheet.Cells[i, keyValue.Key].Value?.ToString());
+                            keyValue.Value.SetValue(dto, parcer);
                         }
                         else
                         {
+                            worksheet.Cells[i, keyValue.Key].AddComment(errors.Message, "Настя");
                             worksheet.Cells[i, keyValue.Key].Style.Fill.PatternType = ExcelFillStyle.Solid;
                             worksheet.Cells[i, keyValue.Key].Style.Fill.BackgroundColor.SetColor(Color.Red);
-                            FileInfo fi = new FileInfo("C:/Users/vladyslav.haliaha/Desktop/Catalog/Mobile.xlsx");
-                            excelPackage.SaveAs(fi);
+                            FileInfo file = new FileInfo("C:/Users/vladyslav.haliaha/Desktop/Catalog/Mobile.xlsx");
+                            excelPackage.SaveAs(file);
                         }
-
-
-
                     }
 
                     mobilePhones.Add(dto);
