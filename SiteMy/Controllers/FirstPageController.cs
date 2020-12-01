@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using SiteMy.Models;
 using SiteMy.Services;
 
 namespace SiteMy.Controllers
@@ -14,8 +13,6 @@ namespace SiteMy.Controllers
         EpplusFileReadService epplusFileReadService;
         public void Get()
         {
-            List<string> mobilePhones = new List<string>();
-            epplusFileReadService.GetMobilePhones(mobilePhones);
 
         }
     }
