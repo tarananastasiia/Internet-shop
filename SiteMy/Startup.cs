@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SiteMy.Models;
 using IdentityServer4.AccessTokenValidation;
+using Bll.Services;
 
 namespace SiteMy
 {
@@ -37,14 +38,21 @@ namespace SiteMy
                     builder.AllowAnyHeader();
                 });
             });
+
+            services.AddMvc();
+            services.AddControllers();
+            services.AddHealthChecks();
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationContext>();
+
+            services.AddScoped<MobilePhoneService>();
+
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
 
             app.UseDeveloperExceptionPage();

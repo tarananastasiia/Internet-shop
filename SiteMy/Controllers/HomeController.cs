@@ -13,7 +13,7 @@ namespace SiteMy.Controllers
     {
         public IActionResult Index()
         {
-            return Redirect($"api/firstpage");
+            return Redirect($"~/api/firstPage/uploadFile");
         }
     }
 }

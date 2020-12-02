@@ -12,8 +12,5 @@ namespace ExelImportUtil.Validation.Param
 
             return errors;
         }
-        //public ErrorsMessages IsNotError(string param, ErrorsMessages errors)
-        //{
-        //}
     }
 }
