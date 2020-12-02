@@ -4,9 +4,9 @@ using System.Text;
 
 namespace ExelImportUtil.Validation.Param
 {
-    public class DoubleValid: IValidator
+    public class DoubleValidator: IValidator
     {
-        public ErrorsMessages Validation(string param,ErrorsMessages errors)
+        public ErrorsMessages Validate(string param,ErrorsMessages errors)
         {
             var d = Double.Parse(param);
             errors.IsNotError = true;

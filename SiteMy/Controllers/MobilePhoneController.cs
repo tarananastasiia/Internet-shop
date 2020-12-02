@@ -12,13 +12,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace SiteMy.Controllers
 {
     [ApiController]
-    [Route("api/firstPage")]
-    [EnableCors("AllowAllOrigin")]
-    public class FirstPageController : Controller
+    [Route("api/mobilePhone")] 
+    public class MobilePhoneController : Controller 
     {
         MobilePhoneService _mobilePhoneService;
 
-        public FirstPageController(MobilePhoneService mobilePhoneService)
+        public MobilePhoneController(MobilePhoneService mobilePhoneService)
         {
             _mobilePhoneService = mobilePhoneService;
         }
@@ -44,7 +43,7 @@ namespace SiteMy.Controllers
                 }
             }
 
-            return Ok("Ok suka");
+            return Ok("Ok");
 
         }
     }

@@ -4,9 +4,9 @@ using System.Text;
 
 namespace ExelImportUtil.Validation.Param
 {
-    public class IntValid : IValidator
+    public class IntValidator : IValidator
     {
-        public ErrorsMessages Validation(string param, ErrorsMessages errors)
+        public ErrorsMessages Validate(string param, ErrorsMessages errors)
         {
             //return Int32.TryParse(param, out int number);
             errors.IsNotError = true;

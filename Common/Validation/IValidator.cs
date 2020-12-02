@@ -8,6 +8,6 @@ namespace ExelImportUtil
 {
     public interface IValidator
     {
-        ErrorsMessages Validation(string param,ErrorsMessages errors);
+        ErrorsMessages Validate(string param,ErrorsMessages errors); 
     }
 }

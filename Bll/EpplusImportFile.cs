@@ -24,7 +24,7 @@ namespace ExelImportUtil
             using (MemoryStream stream = new MemoryStream(bin))
             using (ExcelPackage excelPackage = new ExcelPackage(stream))
             {
-                ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets[typeof(T).GetCustomAttribute<SheetAttribute>().Sheet];
+                ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets[typeof(T).GetCustomAttribute<SheetAttribute>().SheetName];
                 Dictionary<int, PropertyInfo> dictColumnAndProps = propsWithAttribute.ToDictionary(p =>
                 {
                     var columnNumber = NumberColumn(p.GetCustomAttribute<ColumnNameAttribute>().Column, worksheet);
@@ -40,7 +40,7 @@ namespace ExelImportUtil
                     foreach (var keyValue in dictColumnAndProps)
                     {
                         ErrorsMessages errors = new ErrorsMessages();
-                        keyValue.Value.GetCustomAttribute<ColumnNameAttribute>().Validator.Validation(worksheet.Cells[i, keyValue.Key].Value?.ToString(), errors);
+                        keyValue.Value.GetCustomAttribute<ColumnNameAttribute>().Validator.Validate(worksheet.Cells[i, keyValue.Key].Value?.ToString(), errors);
                         if (errors.IsNotError == true)
                         {
                             var parcer = keyValue.Value.GetCustomAttribute<ColumnNameAttribute>().Parser.Parce(worksheet.Cells[i, keyValue.Key].Value?.ToString());
