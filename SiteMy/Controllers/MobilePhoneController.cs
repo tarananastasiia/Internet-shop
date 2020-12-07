@@ -4,27 +4,28 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Bll.Services;
+using Bll.Services.Contracts;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SiteMy.Models;
 
 namespace SiteMy.Controllers
 {
     [ApiController]
-    [Route("api/mobilePhone")] 
-    public class MobilePhoneController : Controller 
+    [Route("api/mobilePhone")]
+    public class MobilePhoneController : Controller
     {
-        MobilePhoneService _mobilePhoneService;
+        IMobilePhoneService _mobilePhoneService;
 
-        public MobilePhoneController(MobilePhoneService mobilePhoneService)
+        public MobilePhoneController(IMobilePhoneService mobilePhoneService)
         {
             _mobilePhoneService = mobilePhoneService;
         }
 
-
         [HttpPost("uploadFile")]
-        public async Task<IActionResult> UploadFile()
+        public async Task<IActionResult> UploadFile(IFormCollection formColection)
         {
             var files = Request.Form.Files;
 
@@ -44,7 +45,12 @@ namespace SiteMy.Controllers
             }
 
             return Ok("Ok");
+        }
 
+        [HttpGet]
+        public List<MobilePhones> Get()
+        {
+            return _mobilePhoneService.GetMobilePhone();
         }
     }
 }

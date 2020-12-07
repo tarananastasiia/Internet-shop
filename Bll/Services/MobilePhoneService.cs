@@ -6,10 +6,11 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using ExelImportUtil;
 using SiteMy.Models;
+using Bll.Services.Contracts;
 
 namespace Bll.Services
 {
-    public class MobilePhoneService
+    public class MobilePhoneService: IMobilePhoneService
     {
         ApplicationContext _context;
         public MobilePhoneService(ApplicationContext context)
@@ -40,6 +41,13 @@ namespace Bll.Services
 
                 _context.MobilePhones.AddRange(phones);
                 _context.SaveChanges();
+        }
+
+        public List<MobilePhones> GetMobilePhone()
+        {
+            var phones = _context.MobilePhones.Take(20).ToList();
+
+            return phones;
         }
     }
 }

@@ -14,6 +14,7 @@ using Microsoft.Extensions.Hosting;
 using SiteMy.Models;
 using IdentityServer4.AccessTokenValidation;
 using Bll.Services;
+using Bll.Services.Contracts;
 
 namespace SiteMy
 {
@@ -48,7 +49,10 @@ namespace SiteMy
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationContext>();
 
-            services.AddScoped<MobilePhoneService>();
+            services.AddTransient<IMobilePhoneService, MobilePhoneService>();
+            services.AddControllersWithViews();
+
+            services.AddSwaggerGen();
 
         }
 
@@ -59,13 +63,19 @@ namespace SiteMy
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
-            app.UseCors();
+            app.UseCors("AllowAllOrigin");
             app.UseAuthentication();
+            app.UseSwagger();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
         }
     }
