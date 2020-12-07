@@ -1,0 +1,21 @@
+<div>
+<table class="table">
+<thead>
+    <tr>
+        <td>Категория</td>
+        <td>Имя</td>
+        <td>Цена</td>
+        <td>Цвет</td>
+    </tr>
+</thead>
+<tbody>
+    <tr *ngFor="let p of phones">
+            <td>{{ p.category }}</td>
+            <td>{{ p.name }}</td>
+            <td>{{ p.price }}</td>
+            <td>{{ p.colour}}</td>
+    </tr>
+</tbody>
+</table>
+</div>
+
