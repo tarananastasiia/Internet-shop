@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using ExelImportUtil;
 using SiteMy.Models;
 using Bll.Services.Contracts;
+using DTOs.ViewModels;
 
 namespace Bll.Services
 {
@@ -43,11 +44,15 @@ namespace Bll.Services
                 _context.SaveChanges();
         }
 
-        public List<MobilePhones> GetMobilePhone()
+        public List<MobilePhones> GetMobilePhone(int pageNumber, int pageSize)
         {
-            var phones = _context.MobilePhones.Take(20).ToList();
-
-            return phones;
+            var pageDto = new PageDTO();
+            pageDto.PageNumber = pageNumber;
+            pageDto.PageSize = pageSize;
+            pageDto.PhonesCount = _context.MobilePhones.Count();
+            var models = _context.MobilePhones.Skip((pageNumber - 1) * pageSize)
+                           .Take(pageSize).ToList(); ;
+            return models;
         }
     }
 }

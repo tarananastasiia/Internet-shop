@@ -8,6 +8,6 @@ namespace Bll.Services.Contracts
     public interface IMobilePhoneService
     {
         void UploadFile(byte[] bin);
-        List<MobilePhones> GetMobilePhone();
+        List<MobilePhones> GetMobilePhone(int pageNumber, int pageSize);
     }
 }

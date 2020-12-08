@@ -48,9 +48,9 @@ namespace SiteMy.Controllers
         }
 
         [HttpGet]
-        public List<MobilePhones> Get()
+        public IActionResult Get(int pageNumber = 1, int pageSize = 20)
         {
-            return _mobilePhoneService.GetMobilePhone();
+            return Ok( _mobilePhoneService.GetMobilePhone(pageNumber,pageSize));
         }
     }
 }
