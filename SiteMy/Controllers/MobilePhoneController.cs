@@ -48,9 +48,17 @@ namespace SiteMy.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get(int pageNumber = 1, int pageSize = 20)
+        public IActionResult Get(int pageNumber =1, int pageSize = 20)
         {
-            return Ok( _mobilePhoneService.GetMobilePhone(pageNumber,pageSize));
+            var result = _mobilePhoneService.GetMobilePhone(pageNumber, pageSize);
+            return Ok(result);
+        }
+
+        [HttpGet("filteringByPrice")]
+        public IActionResult FilteringByPrice(int minPrice = 0, int maxPrice=0)
+        {
+            var result = _mobilePhoneService.GetFilteringBySort(minPrice, maxPrice);
+            return Ok(result);
         }
     }
 }

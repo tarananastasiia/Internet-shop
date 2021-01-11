@@ -1,6 +1,8 @@
-﻿using SiteMy.Models;
+﻿using DTOs.ViewModels;
+using SiteMy.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Bll.Services.Contracts
@@ -8,6 +10,7 @@ namespace Bll.Services.Contracts
     public interface IMobilePhoneService
     {
         void UploadFile(byte[] bin);
-        List<MobilePhones> GetMobilePhone(int pageNumber, int pageSize);
+        PageDTO GetMobilePhone(int pageNumber, int pageSize);
+        IQueryable<MobilePhones> GetFilteringBySort(int minPrice, int maxPrice);
     }
 }
