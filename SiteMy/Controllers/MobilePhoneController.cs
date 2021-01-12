@@ -56,9 +56,13 @@ namespace SiteMy.Controllers
         }
 
         [HttpGet("filteringByPrice")]
-        public IActionResult FilteringByPrice(int minPrice=0, int maxPrice=0, int pageNumber = 1, int pageSize = 20)
+        public IActionResult FilteringByPrice(PageRequestDto pageRequestDto)
         {
-            var result = _mobilePhoneService.GetFilteringBySort(minPrice,maxPrice, pageNumber,pageSize);
+            pageRequestDto.MinPrice = 0;
+            pageRequestDto.MaxPrice = 0;
+            pageRequestDto.PageNumber = 1;
+            pageRequestDto.PageSize = 20;
+            var result = _mobilePhoneService.GetFilteringByPrice(pageRequestDto);
             return Ok(result);
         }
     }
