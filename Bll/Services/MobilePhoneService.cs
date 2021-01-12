@@ -58,10 +58,15 @@ namespace Bll.Services
             return pageDto;
         }
 
-        public IQueryable<MobilePhones> GetFilteringBySort(int minPrice, int maxPrice)
+        public PageRequestDto GetFilteringBySort(int minPrice, int maxPrice,int pageNumber, int pageSize )
         {
-            var models = _context.MobilePhones.Where(x => x.Price >= minPrice && x.Price <= maxPrice);
-            return models;
+            var pageRequestDto = new PageRequestDto();
+            pageRequestDto.PageDTO = new PageDTO { PageNumber = pageNumber, PageSize = pageSize };
+            var models = _context.MobilePhones.Where(x => x.Price >= minPrice && x.Price <= maxPrice).Skip((pageNumber - 1) * pageSize)
+                           .Take(pageSize).ToList();
+            pageRequestDto.PageDTO.Phones=models;
+            pageRequestDto.PageDTO.PhonesCount = models.Count();
+            return pageRequestDto;
         }
     }
 }

@@ -11,6 +11,6 @@ namespace Bll.Services.Contracts
     {
         void UploadFile(byte[] bin);
         PageDTO GetMobilePhone(int pageNumber, int pageSize);
-        IQueryable<MobilePhones> GetFilteringBySort(int minPrice, int maxPrice);
+        PageRequestDto GetFilteringBySort(int minPrice, int maxPrice, int pageNumber, int pageSize);
     }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bll.Services;
 using Bll.Services.Contracts;
+using DTOs.ViewModels;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -55,9 +56,9 @@ namespace SiteMy.Controllers
         }
 
         [HttpGet("filteringByPrice")]
-        public IActionResult FilteringByPrice(int minPrice = 0, int maxPrice=0)
+        public IActionResult FilteringByPrice(int minPrice=0, int maxPrice=0, int pageNumber = 1, int pageSize = 20)
         {
-            var result = _mobilePhoneService.GetFilteringBySort(minPrice, maxPrice);
+            var result = _mobilePhoneService.GetFilteringBySort(minPrice,maxPrice, pageNumber,pageSize);
             return Ok(result);
         }
     }
