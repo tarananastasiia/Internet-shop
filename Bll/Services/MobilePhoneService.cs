@@ -9,10 +9,11 @@ using SiteMy.Models;
 using Bll.Services.Contracts;
 using DTOs.ViewModels;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Bll.Services
 {
-    public class MobilePhoneService: IMobilePhoneService
+    public class MobilePhoneService : IMobilePhoneService
     {
         ApplicationContext _context;
         public MobilePhoneService(ApplicationContext context)
@@ -41,33 +42,18 @@ namespace Bll.Services
                 Id = p.Id
             });
 
-                _context.MobilePhones.AddRange(phones);
-                _context.SaveChanges();
+            _context.MobilePhones.AddRange(phones);
+            _context.SaveChanges();
         }
 
-        public PageDTO GetMobilePhone(int pageNumber, int pageSize)
+        public PageDTO GetFilteringByPrice([FromQuery]PageRequestDto pageRequestDto)
         {
             var pageDto = new PageDTO();
-            pageDto.PageNumber = pageNumber;
-            pageDto.PageSize = pageSize;
-            pageDto.PhonesCount = _context.MobilePhones.Count();
-            var models = _context.MobilePhones.Skip((pageNumber - 1) * pageSize)
-                           .Take(pageSize).ToList();
-            pageDto.Phones = models;
-
-            return pageDto;
-        }
-
-        public PageDTO GetFilteringByPrice(PageRequestDto pageRequestDto)
-        {
-            var pageDto = new PageDTO();
-            pageDto.PageNumber = pageRequestDto.PageNumber;
-            pageDto.PageSize = pageRequestDto.PageSize;
             var models = _context.MobilePhones.Where(x => x.Price >= pageRequestDto.MinPrice && x.Price <= pageRequestDto.MaxPrice).
-                Skip((pageDto.PageNumber - 1) * pageDto.PageSize)
-                           .Take(pageDto.PageSize).ToList();
-            pageDto.Phones=models;
-            pageDto.PhonesCount = models.Count();
+                Skip((pageRequestDto.PageNumber - 1) * pageRequestDto.PageSize)
+                           .Take(pageRequestDto.PageSize).ToList();
+            pageDto.Phones = models;
+            pageDto.PhonesCount = _context.MobilePhones.Where(x=>x.Price >= pageRequestDto.MinPrice && x.Price <= pageRequestDto.MaxPrice).Count();
             return pageDto;
         }
     }

@@ -1,4 +1,5 @@
 ﻿using DTOs.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 using SiteMy.Models;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,6 @@ namespace Bll.Services.Contracts
     public interface IMobilePhoneService
     {
         void UploadFile(byte[] bin);
-        PageDTO GetMobilePhone(int pageNumber, int pageSize);
-        PageDTO GetFilteringByPrice(PageRequestDto pageRequestDto);
+        PageDTO GetFilteringByPrice([FromQuery]PageRequestDto pageRequestDto);
     }
 }

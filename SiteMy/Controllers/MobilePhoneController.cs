@@ -34,7 +34,6 @@ namespace SiteMy.Controllers
             {
                 return BadRequest();
             }
-
             foreach (var file in files)
             {
                 using (var memoryStream = new MemoryStream())
@@ -44,24 +43,12 @@ namespace SiteMy.Controllers
                     _mobilePhoneService.UploadFile(bin);
                 }
             }
-
             return Ok("Ok");
         }
 
         [HttpGet]
-        public IActionResult Get(int pageNumber =1, int pageSize = 20)
+        public IActionResult FilteringByPrice([FromQuery]PageRequestDto pageRequestDto)
         {
-            var result = _mobilePhoneService.GetMobilePhone(pageNumber, pageSize);
-            return Ok(result);
-        }
-
-        [HttpGet("filteringByPrice")]
-        public IActionResult FilteringByPrice(PageRequestDto pageRequestDto)
-        {
-            pageRequestDto.MinPrice = 0;
-            pageRequestDto.MaxPrice = 0;
-            pageRequestDto.PageNumber = 1;
-            pageRequestDto.PageSize = 20;
             var result = _mobilePhoneService.GetFilteringByPrice(pageRequestDto);
             return Ok(result);
         }
