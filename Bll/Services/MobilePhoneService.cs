@@ -10,16 +10,13 @@ using Bll.Services.Contracts;
 using DTOs.ViewModels;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Dal.Repositories.Contracts;
 
 namespace Bll.Services
 {
     public class MobilePhoneService : IMobilePhoneService
     {
-        ApplicationContext _context;
-        public MobilePhoneService(ApplicationContext context)
-        {
-            _context = context;
-        }
+        IMobilePhoneRepositories _mobilePhoneRepositories;
 
         public void UploadFile(byte[] bin)
         {
@@ -41,19 +38,19 @@ namespace Bll.Services
                 Quantity = p.Quantity,
                 Id = p.Id
             });
+            _mobilePhoneRepositories.AddFile(phones);
 
-            _context.MobilePhones.AddRange(phones);
-            _context.SaveChanges();
         }
 
         public PageDTO GetFilteringByPrice([FromQuery]PageRequestDto pageRequestDto)
         {
+            Func<MobilePhones, bool> predicate = x=> x.Price >= pageRequestDto.MinPrice && x.Price <= pageRequestDto.MaxPrice;
+
             var pageDto = new PageDTO();
-            var models = _context.MobilePhones.Where(x => x.Price >= pageRequestDto.MinPrice && x.Price <= pageRequestDto.MaxPrice).
+            pageDto.Phones = _mobilePhoneRepositories.GetModelsFilteringByPrice(predicate).
                 Skip((pageRequestDto.PageNumber - 1) * pageRequestDto.PageSize)
                            .Take(pageRequestDto.PageSize).ToList();
-            pageDto.Phones = models;
-            pageDto.PhonesCount = _context.MobilePhones.Where(x=>x.Price >= pageRequestDto.MinPrice && x.Price <= pageRequestDto.MaxPrice).Count();
+            pageDto.PhonesCount = _mobilePhoneRepositories.GetModelsFilteringByPrice(predicate).Count();
             return pageDto;
         }
     }

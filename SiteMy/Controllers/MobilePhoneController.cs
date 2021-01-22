@@ -43,7 +43,7 @@ namespace SiteMy.Controllers
                     _mobilePhoneService.UploadFile(bin);
                 }
             }
-            return Ok("Ok");
+            return Ok();
         }
 
         [HttpGet]

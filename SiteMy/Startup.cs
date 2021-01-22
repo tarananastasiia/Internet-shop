@@ -15,6 +15,8 @@ using SiteMy.Models;
 using IdentityServer4.AccessTokenValidation;
 using Bll.Services;
 using Bll.Services.Contracts;
+using Dal.Repositories.Contracts;
+using Dal.Repositories;
 
 namespace SiteMy
 {
@@ -50,6 +52,9 @@ namespace SiteMy
                 .AddEntityFrameworkStores<ApplicationContext>();
 
             services.AddTransient<IMobilePhoneService, MobilePhoneService>();
+            services.AddControllersWithViews();
+
+            services.AddTransient<IMobilePhoneRepositories, MobilePhoneRepositories>();
             services.AddControllersWithViews();
 
             services.AddSwaggerGen();
