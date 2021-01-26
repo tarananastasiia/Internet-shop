@@ -11,12 +11,17 @@ using DTOs.ViewModels;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Dal.Repositories.Contracts;
+using DocumentFormat.OpenXml.Bibliography;
 
 namespace Bll.Services
 {
     public class MobilePhoneService : IMobilePhoneService
     {
         IMobilePhoneRepositories _mobilePhoneRepositories;
+        public MobilePhoneService(IMobilePhoneRepositories mobilePhoneRepositories)
+        {
+            _mobilePhoneRepositories = mobilePhoneRepositories;
+        }
 
         public void UploadFile(byte[] bin)
         {
@@ -42,16 +47,28 @@ namespace Bll.Services
 
         }
 
-        public PageDTO GetFilteringByPrice([FromQuery]PageRequestDto pageRequestDto)
+        public PageDTO GetFiltering([FromQuery]PageRequestDto pageRequestDto)
         {
             Func<MobilePhones, bool> predicate = x=> x.Price >= pageRequestDto.MinPrice && x.Price <= pageRequestDto.MaxPrice;
 
             var pageDto = new PageDTO();
-            pageDto.Phones = _mobilePhoneRepositories.GetModelsFilteringByPrice(predicate).
-                Skip((pageRequestDto.PageNumber - 1) * pageRequestDto.PageSize)
-                           .Take(pageRequestDto.PageSize).ToList();
-            pageDto.PhonesCount = _mobilePhoneRepositories.GetModelsFilteringByPrice(predicate).Count();
+            if (pageRequestDto.PageNumber != 0)
+                pageDto.Phones = _mobilePhoneRepositories.GetModelsFiltering(predicate).
+                    Skip((pageRequestDto.PageNumber - 1) * pageRequestDto.PageSize)
+                               .Take(pageRequestDto.PageSize).ToList();
+                pageDto.PhonesCount = _mobilePhoneRepositories.GetModelsFiltering(predicate).Count();
             return pageDto;
+        }
+        public PageDTO GetSorting([FromQuery]SortingDto sortingDto)
+        {
+            var pageDto = new PageDTO();
+            if (sortingDto.PageNumber != 0)
+                pageDto.Phones = _mobilePhoneRepositories.GetSorting(sortingDto.ColumnNumberBySorting,sortingDto.Sort).
+                   Skip((sortingDto.PageNumber - 1) * sortingDto.PageSize)
+                              .Take(sortingDto.PageSize).ToList();
+            pageDto.PhonesCount = pageDto.Phones.Count();
+            return pageDto;
+
         }
     }
 }

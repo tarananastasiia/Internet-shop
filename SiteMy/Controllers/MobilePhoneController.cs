@@ -26,7 +26,7 @@ namespace SiteMy.Controllers
         }
 
         [HttpPost("uploadFile")]
-        public async Task<IActionResult> UploadFile(IFormCollection formColection)
+        public async Task<IActionResult> UploadFile()
         {
             var files = Request.Form.Files;
 
@@ -47,9 +47,16 @@ namespace SiteMy.Controllers
         }
 
         [HttpGet]
-        public IActionResult FilteringByPrice([FromQuery]PageRequestDto pageRequestDto)
+        public IActionResult Filtering([FromQuery]PageRequestDto pageRequestDto)
         {
-            var result = _mobilePhoneService.GetFilteringByPrice(pageRequestDto);
+            var result = _mobilePhoneService.GetFiltering(pageRequestDto);
+            return Ok(result);
+        }
+
+        [HttpGet("sorting")]
+        public IActionResult Sorting([FromQuery]SortingDto sortingDto)
+        {
+            var result = _mobilePhoneService.GetSorting(sortingDto);
             return Ok(result);
         }
     }
