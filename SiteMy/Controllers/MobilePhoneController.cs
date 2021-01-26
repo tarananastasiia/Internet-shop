@@ -54,7 +54,7 @@ namespace SiteMy.Controllers
         }
 
         [HttpGet("sorting")]
-        public IActionResult Sorting([FromQuery]SortingDto sortingDto)
+        public IActionResult Sorter([FromQuery]SorterDto sortingDto)
         {
             var result = _mobilePhoneService.GetSorting(sortingDto);
             return Ok(result);

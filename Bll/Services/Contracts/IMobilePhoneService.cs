@@ -12,6 +12,6 @@ namespace Bll.Services.Contracts
     {
         void UploadFile(byte[] bin);
         PageDTO GetFiltering([FromQuery]PageRequestDto pageRequestDto);
-        PageDTO GetSorting([FromQuery]SortingDto sortingDto);
+        PageDTO GetSorting([FromQuery]SorterDto sorterDto);
     }
 }

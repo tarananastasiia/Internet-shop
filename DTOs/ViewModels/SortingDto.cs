@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DTOs.ViewModels
 {
-    public class SortingDto
+    public class SorterDto
     {
         public int ColumnNumberBySorting { get; set; }
         public bool Sort { get; set; }
