@@ -21,11 +21,17 @@ namespace Dal.Repositories
             _context.SaveChanges();
         }
 
-        public IEnumerable<MobilePhones> GetModelsFiltering(Func<MobilePhones, bool> predicate)
+        public IEnumerable<MobilePhones> GetModelsFiltering(Func<MobilePhones, bool> predicate, int pageNumber, int pageSize)
         {
-            var a = _context.MobilePhones.Where(predicate);
+            var a = _context.MobilePhones.Where(predicate).Skip((pageNumber - 1) * pageSize).Take(pageSize);
             return a;
         }
+        public int CountMobiles(IEnumerable<MobilePhones> mobilePhones)
+        {
+            var count = mobilePhones.Count();
+            return count;
+        }
+
         public IOrderedQueryable<MobilePhones> GetSorting(int numberColumn, bool sort)
         {
             IOrderedQueryable<MobilePhones> a=null;

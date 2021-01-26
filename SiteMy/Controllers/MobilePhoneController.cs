@@ -47,16 +47,16 @@ namespace SiteMy.Controllers
         }
 
         [HttpGet]
-        public IActionResult Filtering([FromQuery]PageRequestDto pageRequestDto)
+        public IActionResult GetPage([FromQuery]PageRequestDto pageRequestDto)
         {
             var result = _mobilePhoneService.GetFiltering(pageRequestDto);
             return Ok(result);
         }
 
         [HttpGet("sorting")]
-        public IActionResult Sorter([FromQuery]SorterDto sortingDto)
+        public IActionResult Sorter([FromQuery]SorterDto sorterDto)
         {
-            var result = _mobilePhoneService.GetSorting(sortingDto);
+            var result = _mobilePhoneService.GetSorting(sorterDto);
             return Ok(result);
         }
     }

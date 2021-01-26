@@ -53,12 +53,12 @@ namespace Bll.Services
 
             var pageDto = new PageDTO();
             if (pageRequestDto.PageNumber != 0)
-                pageDto.Phones = _mobilePhoneRepositories.GetModelsFiltering(predicate).
-                    Skip((pageRequestDto.PageNumber - 1) * pageRequestDto.PageSize)
-                               .Take(pageRequestDto.PageSize).ToList();
-                pageDto.PhonesCount = _mobilePhoneRepositories.GetModelsFiltering(predicate).Count();
+                pageDto.Phones = _mobilePhoneRepositories.GetModelsFiltering(predicate, pageRequestDto.PageNumber,pageRequestDto.PageSize).ToList();
+
+                pageDto.PhonesCount = _mobilePhoneRepositories.CountMobiles(pageDto.Phones);
             return pageDto;
         }
+
         public PageDTO GetSorting([FromQuery]SorterDto sorterDto)
         {
             var pageDto = new PageDTO();
