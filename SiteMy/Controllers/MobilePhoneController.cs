@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Bll.Services;
 using Bll.Services.Contracts;
 using DTOs.ViewModels;
+using ExelImportUtil;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -50,13 +51,6 @@ namespace SiteMy.Controllers
         public IActionResult GetPage([FromQuery]PageRequestDto pageRequestDto)
         {
             var result = _mobilePhoneService.GetFiltering(pageRequestDto);
-            return Ok(result);
-        }
-
-        [HttpGet("sorting")]
-        public IActionResult Sorter([FromQuery]SorterDto sorterDto)
-        {
-            var result = _mobilePhoneService.GetSorting(sorterDto);
             return Ok(result);
         }
     }

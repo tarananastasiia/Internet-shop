@@ -11,7 +11,6 @@ namespace Bll.Services.Contracts
     public interface IMobilePhoneService
     {
         void UploadFile(byte[] bin);
-        PageDTO GetFiltering([FromQuery]PageRequestDto pageRequestDto);
-        PageDTO GetSorting([FromQuery]SorterDto sorterDto);
+        PageDTO GetFiltering(PageRequestDto pageRequestDto);
     }
 }

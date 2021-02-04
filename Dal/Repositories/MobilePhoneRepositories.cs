@@ -1,8 +1,13 @@
 ﻿using Dal.Repositories.Contracts;
+using DocumentFormat.OpenXml.Bibliography;
+using ExelImportUtil;
 using SiteMy.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 
 namespace Dal.Repositories
@@ -21,58 +26,25 @@ namespace Dal.Repositories
             _context.SaveChanges();
         }
 
-        public IEnumerable<MobilePhones> GetModelsFiltering(Func<MobilePhones, bool> predicate, int pageNumber, int pageSize)
+        public IEnumerable<MobilePhones> GetModelsFiltering(Expression<Func<MobilePhones, bool>> predicate, int pageNumber, int pageSize,
+            Expression<Func<MobilePhones, object>> ordering, bool sort)
         {
-            var a = _context.MobilePhones.Where(predicate).Skip((pageNumber - 1) * pageSize).Take(pageSize);
-            return a;
+            var mobiles =
+                 _context.MobilePhones
+                 .OrderBy(ordering)
+                 .Where(predicate)
+                 .Skip((pageNumber - 1) * pageSize)
+                 .Take(pageSize);
+            return mobiles;
         }
-        public int CountMobiles(IEnumerable<MobilePhones> mobilePhones)
+
+        public int CountMobiles(Expression<Func<MobilePhones, bool>> predicate)
         {
-            var count = mobilePhones.Count();
+            var count = _context
+                   .MobilePhones.Where(predicate)
+                   .Count();
+
             return count;
-        }
-
-        public IOrderedQueryable<MobilePhones> GetSorting(int numberColumn, bool sort)
-        {
-            IOrderedQueryable<MobilePhones> a=null;
-            if (numberColumn==1)
-            {
-                if (sort == true)
-                {
-                    a = _context.MobilePhones.OrderBy(u => u.Category);
-                }
-                else
-                    a = _context.MobilePhones.OrderByDescending(u => u.Category);     
-            }
-            if (numberColumn == 2)
-            {
-                if (sort == true)
-                {
-                    a = _context.MobilePhones.OrderBy(u => u.Name);
-                }
-                else
-                    a = _context.MobilePhones.OrderByDescending(u => u.Name);
-            }
-            if (numberColumn == 3)
-            {
-                if (sort == true)
-                {
-                    a = _context.MobilePhones.OrderBy(u => u.Price);
-                }
-                else
-                    a = _context.MobilePhones.OrderByDescending(u => u.Price);
-            }
-            if (numberColumn == 4)
-            {
-                if (sort == true)
-                {
-                    a = _context.MobilePhones.OrderBy(u => u.Colour);
-                }
-                else
-                    a = _context.MobilePhones.OrderByDescending(u => u.Colour);
-            }
-            return a;
-
         }
     }
 }
