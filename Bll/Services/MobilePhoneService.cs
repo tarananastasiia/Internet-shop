@@ -14,6 +14,8 @@ using Dal.Repositories.Contracts;
 using DocumentFormat.OpenXml.Bibliography;
 using System.Linq.Expressions;
 using DocumentFormat.OpenXml.Office2010.Excel;
+using System.Diagnostics;
+using System.Threading;
 
 namespace Bll.Services
 {
@@ -51,8 +53,6 @@ namespace Bll.Services
 
         public PageDTO GetFiltering(PageRequestDto pageRequestDto)
         {
-            pageRequestDto.SortingColumnName = pageRequestDto.SortingColumnName ?? "Name";
-
             Expression<Func<MobilePhones, bool>> predicate = x => x.Price >= pageRequestDto.MinPrice && x.Price <= pageRequestDto.MaxPrice;
             SortingPhoneService sortingPhoneService = new SortingPhoneService();
 
@@ -60,7 +60,7 @@ namespace Bll.Services
 
             var pageDto = new PageDTO();
             pageDto.Phones = _mobilePhoneRepositories.GetModelsFiltering(predicate, pageRequestDto.PageNumber,
-                pageRequestDto.PageSize, sorter, pageRequestDto.Sort)
+                pageRequestDto.PageSize, sorter, pageRequestDto.AscendingOrDescending)
                 .ToList();
             pageDto.PhonesCount = _mobilePhoneRepositories.CountMobiles(predicate);
             return pageDto;

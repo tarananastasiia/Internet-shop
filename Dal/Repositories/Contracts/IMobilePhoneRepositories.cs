@@ -11,7 +11,7 @@ namespace Dal.Repositories.Contracts
     {
         void AddFile(IEnumerable<MobilePhones> phones);
         IEnumerable<MobilePhones> GetModelsFiltering(Expression<Func<MobilePhones, bool>> predicate, int pageNumber, int pageSize,
-              Expression<Func<MobilePhones, object>> ordering, bool sort);
+              Expression<Func<MobilePhones, object>> ordering, bool ascendingOrDescending);
         int CountMobiles(Expression<Func<MobilePhones, bool>> predicate);
     }
 }

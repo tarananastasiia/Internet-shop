@@ -9,6 +9,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 
 namespace Dal.Repositories
 {
@@ -27,14 +28,28 @@ namespace Dal.Repositories
         }
 
         public IEnumerable<MobilePhones> GetModelsFiltering(Expression<Func<MobilePhones, bool>> predicate, int pageNumber, int pageSize,
-            Expression<Func<MobilePhones, object>> ordering, bool sort)
+            Expression<Func<MobilePhones, object>> ordering, bool ascendingOrDescending)
         {
-            var mobiles =
-                 _context.MobilePhones
-                 .OrderBy(ordering)
-                 .Where(predicate)
-                 .Skip((pageNumber - 1) * pageSize)
-                 .Take(pageSize);
+            IEnumerable<MobilePhones> mobiles = null;
+            if (ascendingOrDescending == true)
+            {
+                mobiles =
+                       _context.MobilePhones
+                       .OrderBy(ordering)
+                       .Where(predicate)
+                       .Skip((pageNumber - 1) * pageSize)
+                       .Take(pageSize);
+
+            }
+            else
+            {
+                mobiles =
+                      _context.MobilePhones
+                      .OrderByDescending(ordering)
+                      .Where(predicate)
+                      .Skip((pageNumber - 1) * pageSize)
+                      .Take(pageSize);
+            }
             return mobiles;
         }
 

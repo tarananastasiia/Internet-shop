@@ -20,8 +20,7 @@ namespace DTOs.ViewModels
 
         [Range(1, 200)]
         public int PageSize { get; set; }
-        [Range(1, 4)]
         public string SortingColumnName { get; set; }
-        public bool Sort { get; set; }
+        public bool AscendingOrDescending { get; set; }
     }
 }
