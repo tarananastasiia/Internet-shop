@@ -30,13 +30,13 @@ namespace Dal.Repositories
         public IEnumerable<MobilePhones> GetModelsFiltering(Expression<Func<MobilePhones, bool>> predicate, int pageNumber, int pageSize,
             Expression<Func<MobilePhones, object>> ordering, bool ascendingOrDescending)
         {
-            IEnumerable<MobilePhones> mobiles = null;
+            IQueryable<MobilePhones> mobiles = null;
             if (ascendingOrDescending == true)
             {
                 mobiles =
                        _context.MobilePhones
-                       .OrderBy(ordering)
                        .Where(predicate)
+                       .OrderBy(ordering)
                        .Skip((pageNumber - 1) * pageSize)
                        .Take(pageSize);
 
@@ -45,19 +45,19 @@ namespace Dal.Repositories
             {
                 mobiles =
                       _context.MobilePhones
-                      .OrderByDescending(ordering)
                       .Where(predicate)
+                      .OrderByDescending(ordering)
                       .Skip((pageNumber - 1) * pageSize)
                       .Take(pageSize);
             }
-            return mobiles;
+            return mobiles.ToList();
         }
 
         public int CountMobiles(Expression<Func<MobilePhones, bool>> predicate)
         {
             var count = _context
-                   .MobilePhones.Where(predicate)
-                   .Count();
+                   .MobilePhones
+                   .Count(predicate);
 
             return count;
         }

@@ -53,7 +53,20 @@ namespace Bll.Services
 
         public PageDTO GetFiltering(PageRequestDto pageRequestDto)
         {
-            Expression<Func<MobilePhones, bool>> predicate = x => x.Price >= pageRequestDto.MinPrice && x.Price <= pageRequestDto.MaxPrice;
+            Expression<Func<MobilePhones, bool>> predicate = x => true;
+            if (pageRequestDto.MinPrice == null&&pageRequestDto.MaxPrice!=null)
+            {
+                predicate = x => x.Price <= pageRequestDto.MaxPrice;
+            }
+            if (pageRequestDto.MaxPrice == null && pageRequestDto.MinPrice != null)
+            {
+                predicate = x => x.Price <= pageRequestDto.MinPrice;
+            }
+            if(pageRequestDto.MaxPrice != null && pageRequestDto.MinPrice != null)
+            {
+                predicate = x => x.Price >= pageRequestDto.MinPrice && x.Price <= pageRequestDto.MaxPrice;
+            }
+
             SortingPhoneService sortingPhoneService = new SortingPhoneService();
 
             var sorter = sortingPhoneService.GetSorter(pageRequestDto.SortingColumnName);

@@ -11,12 +11,11 @@ namespace Bll.Services
     {
         Dictionary<string, Expression<Func<MobilePhones, object>>> dict = new Dictionary<string, Expression<Func<MobilePhones, object>>>();
         public SortingPhoneService()
-        {
+        { 
+            dict.Add("category", x => x.Category);
             dict.Add("name", x => x.Name);
-            dict.Add("Price", x => x.Price);
-            dict.Add("Quantity", x => x.Quantity);
-            dict.Add("Id", x => x.Id);
-            dict.Add("Colour", x => x.Colour);
+            dict.Add("price", x => x.Price);
+            dict.Add("colour", x => x.Colour);
         }
         public Expression<Func<MobilePhones, object>> GetSorter(string columnName)
         {

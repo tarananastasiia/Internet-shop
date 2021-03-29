@@ -9,8 +9,7 @@ namespace DTOs.ViewModels
     {
         public List<MobilePhones> Phones { get; set; }
         public int PhonesCount { get; set; }
-        public int PageSize { get; set; }
-        public int PageNumber { get; set; }
+        public int MaxPrice { get; set; }
         public PageDTO()
         {
             Phones = new List<MobilePhones>();

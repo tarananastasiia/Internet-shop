@@ -54,7 +54,7 @@ namespace SiteMy
             services.AddTransient<IMobilePhoneService, MobilePhoneService>();
             services.AddControllersWithViews();
 
-            services.AddTransient< SortingPhoneService>();
+            services.AddTransient<SortingPhoneService>();
             services.AddControllersWithViews();
 
             services.AddScoped<IMobilePhoneRepositories, MobilePhoneRepositories>();
@@ -73,6 +73,11 @@ namespace SiteMy
             app.UseCors("AllowAllOrigin");
             app.UseAuthentication();
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
@@ -80,11 +85,7 @@ namespace SiteMy
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-            });
+
         }
     }
 }
