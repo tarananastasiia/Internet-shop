@@ -16,6 +16,8 @@ using System.Linq.Expressions;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using System.Diagnostics;
 using System.Threading;
+using Microsoft.AspNetCore.Http;
+using System.Collections;
 
 namespace Bll.Services
 {
@@ -27,10 +29,10 @@ namespace Bll.Services
             _mobilePhoneRepositories = mobilePhoneRepositories;
         }
 
-        public void UploadFile(byte[] bin)
+        public void UploadFile(byte[] bin, IFormFile file)
         {
             EpplusImportFile epplusImportFile = new EpplusImportFile();
-            var phonesDtos = epplusImportFile.GetEntityExel<MobilePhonesExcelDTO>(bin);
+            var phonesDtos = epplusImportFile.GetEntityExel<MobilePhonesExcelDTO>(bin, file);
 
             var phones = phonesDtos.Select(p => new MobilePhones
             {
@@ -75,7 +77,7 @@ namespace Bll.Services
             pageDto.Phones = _mobilePhoneRepositories.GetModelsFiltering(predicate, pageRequestDto.PageNumber,
                 pageRequestDto.PageSize, sorter, pageRequestDto.AscendingOrDescending)
                 .ToList();
-            pageDto.PhonesCount = _mobilePhoneRepositories.CountMobiles(predicate);
+            pageDto.Count = _mobilePhoneRepositories.CountMobiles(predicate);
             return pageDto;
         }
 

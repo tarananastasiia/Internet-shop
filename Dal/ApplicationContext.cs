@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Dal.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace SiteMy.Models
             Database.EnsureCreated();
         }
         public DbSet<MobilePhones> MobilePhones { get; set; }
+        public DbSet<Plumbing> Plumbings { get; set; }
         public DbSet<LinkToPhoto> Links { get; set; }
     }
 }

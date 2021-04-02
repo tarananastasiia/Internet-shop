@@ -12,7 +12,6 @@ namespace SiteMy.Services
     {
         public void GetMobilePhones(List<string> mobilePhones)
         {
-            //List<string> mobilePhones = new List<string>();
             byte[] bin = File.ReadAllBytes("C:/Users/vladyslav.haliaha/Desktop/Catalog/Mobile.xlsx");
             using (MemoryStream stream = new MemoryStream(bin))
             using (ExcelPackage excelPackage = new ExcelPackage(stream))

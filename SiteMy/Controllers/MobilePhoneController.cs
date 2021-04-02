@@ -20,10 +20,12 @@ namespace SiteMy.Controllers
     public class MobilePhoneController : Controller
     {
         IMobilePhoneService _mobilePhoneService;
+        IPlumbingService _plumbingService;
 
-        public MobilePhoneController(IMobilePhoneService mobilePhoneService)
+        public MobilePhoneController(IMobilePhoneService mobilePhoneService, IPlumbingService plumbingService)
         {
             _mobilePhoneService = mobilePhoneService;
+            _plumbingService = plumbingService;
         }
 
         [HttpPost("uploadFile")]
@@ -41,7 +43,14 @@ namespace SiteMy.Controllers
                 {
                     await file.CopyToAsync(memoryStream);
                     var bin = memoryStream.ToArray();
-                    _mobilePhoneService.UploadFile(bin);
+                    if (file.FileName == "Mobile.xlsx")
+                    {
+                        _mobilePhoneService.UploadFile(bin, file);
+                    }
+                    if(file.FileName == "Plumbing.xlsx")
+                    {
+                        _plumbingService.UploadFile(bin, file);
+                    }
                 }
             }
             return Ok();

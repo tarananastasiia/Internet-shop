@@ -10,12 +10,14 @@ using System.Drawing;
 using DocumentFormat.OpenXml.Drawing;
 using OfficeOpenXml.Style;
 using ExelImportUtil.Validation;
+using Microsoft.AspNetCore.Http;
+using System.Collections;
 
 namespace ExelImportUtil
 {
     public class EpplusImportFile
     {
-        public List<T> GetEntityExel<T>(byte[] bin) where T : new()
+        public List<T> GetEntityExel<T>(byte[] bin, IFormFile files) where T : new()
         {
             ExcelPackage.LicenseContext = LicenseContext.Commercial;
             var properties = typeof(T).GetProperties();
@@ -31,7 +33,7 @@ namespace ExelImportUtil
                     return columnNumber;
                 }, p => p);
 
-                List<T> mobilePhones = new List<T>();
+                List<T> category = new List<T>();
 
                 for (int i = worksheet.Dimension.Start.Row + 1; i <= worksheet.Dimension.End.Row; i++)
                 {
@@ -51,15 +53,15 @@ namespace ExelImportUtil
                             worksheet.Cells[i, keyValue.Key].AddComment(errors.Message, "Настя");
                             worksheet.Cells[i, keyValue.Key].Style.Fill.PatternType = ExcelFillStyle.Solid;
                             worksheet.Cells[i, keyValue.Key].Style.Fill.BackgroundColor.SetColor(Color.Red);
-                            FileInfo file = new FileInfo("C:/Users/vladyslav.haliaha/Desktop/Catalog/Mobile.xlsx");
+                            FileInfo file = new FileInfo("C:/Users/vladyslav.haliaha/Desktop/Catalog/"+ files.FileName);
                             excelPackage.SaveAs(file);
                         }
                     }
 
-                    mobilePhones.Add(dto);
+                    category.Add(dto);
                 }
 
-                return mobilePhones;
+                return category;
             }
         }
         public int NumberColumn(string name, ExcelWorksheet worksheet)

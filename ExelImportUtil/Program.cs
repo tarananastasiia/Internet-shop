@@ -21,9 +21,9 @@ namespace ExelImportUtil
 
             using (ApplicationContext db = new ApplicationContext(options))
             {
-                MobilePhoneRepositories mobilePhoneRepositories = new MobilePhoneRepositories(db);
-                MobilePhoneService phoneService = new MobilePhoneService(mobilePhoneRepositories);
-                phoneService.UploadFile(bin); 
+                //MobilePhoneRepositories mobilePhoneRepositories = new MobilePhoneRepositories(db);
+                //MobilePhoneService phoneService = new MobilePhoneService(mobilePhoneRepositories);
+                //phoneService.UploadFile(bin);
             }
 
         }
