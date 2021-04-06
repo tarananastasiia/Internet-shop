@@ -1,0 +1,17 @@
+<div class="form-group">
+  <input [(ngModel)]="minPriceMobile"> <input [(ngModel)]="maxPriceMobile">
+  <button (click)="ngOnInit()">Фільтрувати</button>
+</div>
+
+<mat-table #table [dataSource]="dataSource" matSort>
+  <ng-container matColumnDef="{{columnName.id}}" *ngFor="let columnName of columnNames">
+    <mat-header-cell *matHeaderCellDef (click)="getColName(columnName.id)" mat-sort-header > {{columnName.value}}</mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element[columnName.id]}}</mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
+
+<mat-paginator [length]="totalPhonesCount" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 25, 100]"
+  (page)="getMobiles($event)"></mat-paginator>

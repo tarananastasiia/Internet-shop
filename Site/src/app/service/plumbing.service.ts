@@ -3,10 +3,10 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { PageDTO } from '../../app/model/page-mobile';
 
 @Injectable()
-export class MobilePhonesService {
+export class PlumbingService {
   constructor(private http: HttpClient) { }
 
-  getMobile(minPrice: number, maxPrice: number, pageNumber: number, pageSize: number,
+  getPlumbing(minPrice: number, maxPrice: number, pageNumber: number, pageSize: number,
     columnName: string, ascendingOrDescendingSorting: boolean) {
 
     let params = new HttpParams()
@@ -21,7 +21,7 @@ export class MobilePhonesService {
     if (maxPrice)
       params = params.append("maxPrice", `${maxPrice}`)
 
-    return this.http.get<PageDTO>('https://localhost:44395/api/mobilePhone',
+    return this.http.get<PageDTO>('https://localhost:44395/api/plumbing',
       {
         params: params
       });
