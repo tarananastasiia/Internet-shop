@@ -10,44 +10,16 @@ using System.Text;
 
 namespace Dal.Repositories
 {
-    public class PlumbingRepositories : IPlumbingRepositories
+    public class PlumbingRepositories : BaseCrudRepository<Plumbing>, IPlumbingRepositories
     {
 
-        ApplicationContext _context;
-        public PlumbingRepositories(ApplicationContext context)
+        public PlumbingRepositories(ApplicationContext context) : base(context)
         {
-            _context = context;
         }
 
         public void AddFile(IList<Plumbing> plumbings)
         {
-          _context.BulkInsert(plumbings);
-        }
-
-        public IEnumerable<Plumbing> GetModelsFiltering(Expression<Func<Plumbing, bool>> predicate, int pageNumber, int pageSize,
-            Expression<Func<Plumbing, object>> ordering, bool ascendingOrDescending)
-        {
-            IQueryable<Plumbing> plumbings = null;
-            if (ascendingOrDescending == true)
-            {
-                plumbings =
-                       _context.Plumbings
-                       .Where(predicate)
-                       .OrderBy(ordering)
-                       .Skip((pageNumber - 1) * pageSize)
-                       .Take(pageSize);
-
-            }
-            else
-            {
-                plumbings =
-                      _context.Plumbings
-                      .Where(predicate)
-                      .OrderByDescending(ordering)
-                      .Skip((pageNumber - 1) * pageSize)
-                      .Take(pageSize);
-            }
-            return plumbings.ToList();
+            _context.BulkInsert(plumbings);
         }
 
         public int CountPlumbings(Expression<Func<Plumbing, bool>> predicate)

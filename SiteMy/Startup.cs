@@ -17,6 +17,7 @@ using Bll.Services;
 using Bll.Services.Contracts;
 using Dal.Repositories.Contracts;
 using Dal.Repositories;
+using ExelImportUtil;
 
 namespace SiteMy
 {
@@ -51,7 +52,9 @@ namespace SiteMy
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationContext>();
 
+            services.AddTransient<IEpplusImportFile, EpplusImportFile>();
             services.AddTransient<IMobilePhoneService, MobilePhoneService>();
+
             services.AddControllersWithViews();
 
             services.AddTransient<SortingPhoneService>();

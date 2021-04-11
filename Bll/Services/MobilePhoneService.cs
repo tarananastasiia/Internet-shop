@@ -18,21 +18,23 @@ using System.Diagnostics;
 using System.Threading;
 using Microsoft.AspNetCore.Http;
 using System.Collections;
+using Dal.Repositories;
 
 namespace Bll.Services
 {
     public class MobilePhoneService : IMobilePhoneService
     {
-        IMobilePhoneRepositories _mobilePhoneRepositories;
-        public MobilePhoneService(IMobilePhoneRepositories mobilePhoneRepositories)
+        private readonly IMobilePhoneRepositories _mobilePhoneRepositories;
+        private readonly IEpplusImportFile _epplusImport;
+        public MobilePhoneService(IMobilePhoneRepositories mobilePhoneRepositories, IEpplusImportFile epplusImport)
         {
             _mobilePhoneRepositories = mobilePhoneRepositories;
+            _epplusImport = epplusImport;
         }
 
         public void UploadFile(byte[] bin, IFormFile file)
         {
-            EpplusImportFile epplusImportFile = new EpplusImportFile();
-            var phonesDtos = epplusImportFile.GetEntityExel<MobilePhonesExcelDTO>(bin, file);
+            var phonesDtos = _epplusImport.GetEntityExel<MobilePhonesExcelDTO>(bin, file);
 
             var phones = phonesDtos.Select(p => new MobilePhones
             {
@@ -49,14 +51,16 @@ namespace Bll.Services
                 Quantity = p.Quantity,
                 Id = p.Id
             });
-            _mobilePhoneRepositories.AddFile(phones);
+
+            _mobilePhoneRepositories.Save(phones);
 
         }
 
         public PageDTO GetFiltering(PageRequestDto pageRequestDto)
         {
+
             Expression<Func<MobilePhones, bool>> predicate = x => true;
-            if (pageRequestDto.MinPrice == null&&pageRequestDto.MaxPrice!=null)
+            if (pageRequestDto.MinPrice == null && pageRequestDto.MaxPrice != null)
             {
                 predicate = x => x.Price <= pageRequestDto.MaxPrice;
             }
@@ -64,7 +68,7 @@ namespace Bll.Services
             {
                 predicate = x => x.Price <= pageRequestDto.MinPrice;
             }
-            if(pageRequestDto.MaxPrice != null && pageRequestDto.MinPrice != null)
+            if (pageRequestDto.MaxPrice != null && pageRequestDto.MinPrice != null)
             {
                 predicate = x => x.Price >= pageRequestDto.MinPrice && x.Price <= pageRequestDto.MaxPrice;
             }

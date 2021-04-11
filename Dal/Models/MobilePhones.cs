@@ -19,9 +19,8 @@ namespace SiteMy.Models
         public string Description { get; set; }
         public string Manufacturer { get; set; }
         public string Photo { get; set; }
-        public virtual ICollection<LinkToPhoto> LinkToPhotos { get; set; }      
+        public virtual ICollection<LinkToPhoto> LinkToPhotos { get; set; }
         public string Colour { get; set; }
-
 
         public MobilePhones()
         {

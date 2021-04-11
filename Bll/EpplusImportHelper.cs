@@ -16,9 +16,9 @@ using Bll.Services.Contracts;
 
 namespace ExelImportUtil
 {
-    public class EpplusImportFile : IEpplusImportFile
+    public static class EpplusImportHelper
     {
-        public List<T> GetEntityExel<T>(byte[] bin, IFormFile files) where T : new()
+        public static List<T> GetEntityExel<T>(byte[] bin, IFormFile files) where T : new()
         {
             ExcelPackage.LicenseContext = LicenseContext.Commercial;
             var properties = typeof(T).GetProperties();
@@ -65,7 +65,7 @@ namespace ExelImportUtil
                 return category;
             }
         }
-        private int NumberColumn(string name, ExcelWorksheet worksheet)
+        private static int NumberColumn(string name, ExcelWorksheet worksheet)
         {
             for (int j = worksheet.Dimension.Start.Column; j <= worksheet.Dimension.End.Column; j++)
             {
