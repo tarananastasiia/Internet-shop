@@ -17,17 +17,9 @@ namespace Dal.Repositories
         {
         }
 
-        public void AddFile(IList<Plumbing> plumbings)
+        public void Save(IList<Plumbing> plumbings)
         {
             _context.BulkInsert(plumbings);
-        }
-
-        public int CountPlumbings(Expression<Func<Plumbing, bool>> predicate)
-        {
-            var count = _context
-                   .Plumbings
-                   .Count(predicate);
-            return count;
         }
     }
 }

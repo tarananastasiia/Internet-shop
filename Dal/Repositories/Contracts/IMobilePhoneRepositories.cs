@@ -9,9 +9,9 @@ namespace Dal.Repositories.Contracts
 {
     public interface IMobilePhoneRepositories
     {
-        void Save(IEnumerable<MobilePhones> phones);
+        void Save(IList<MobilePhones> phones);
         IEnumerable<MobilePhones> GetModelsFiltering(Expression<Func<MobilePhones, bool>> predicate, int pageNumber, int pageSize,
               Expression<Func<MobilePhones, object>> ordering, bool ascendingOrDescending);
-        int CountMobiles(Expression<Func<MobilePhones, bool>> predicate);
+        int Count(Expression<Func<MobilePhones, bool>> predicate);
     }
 }

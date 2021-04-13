@@ -6,19 +6,19 @@ using System.Text;
 
 namespace Bll.Services
 {
-    public class SortingPlumbingService
+    public class BaseSortingService<TEntity> where TEntity : BaseProduct
     {
-        Dictionary<string, Expression<Func<Plumbing, object>>> dict = new Dictionary<string, Expression<Func<Plumbing, object>>>();
-        public SortingPlumbingService()
+        Dictionary<string, Expression<Func<TEntity, object>>> dict = new Dictionary<string, Expression<Func<TEntity, object>>>();
+        public BaseSortingService()
         {
             dict.Add("category", x => x.Category);
             dict.Add("name", x => x.Name);
             dict.Add("price", x => x.Price);
             dict.Add("colour", x => x.Colour);
         }
-        public Expression<Func<Plumbing, object>> GetSorter(string columnName)
+        public Expression<Func<TEntity, object>> GetSorter(string columnName)
         {
-            Expression<Func<Plumbing, object>> sorter = dict[columnName];
+            Expression<Func<TEntity, object>> sorter = dict[columnName];
             return sorter;
         }
     }

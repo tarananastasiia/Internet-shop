@@ -13,7 +13,7 @@ using System.Text;
 
 namespace Bll.Services
 {
-    public class PlumbingService: IPlumbingService
+    public class PlumbingService: BaseSortingService<Plumbing>, IPlumbingService
     {
         IPlumbingRepositories _plumbingRepositories;
         public PlumbingService(IPlumbingRepositories plumbingRepositories)
@@ -38,7 +38,7 @@ namespace Bll.Services
                 Quantity = p.Quantity,
                 Id = p.Id
             }).ToList();
-            _plumbingRepositories.AddFile(plumbings);
+            _plumbingRepositories.Save(plumbings);
         }
 
         public PageDTO GetFiltering(PageRequestDto pageRequestDto)
@@ -57,15 +57,13 @@ namespace Bll.Services
                 predicate = x => x.Price >= pageRequestDto.MinPrice && x.Price <= pageRequestDto.MaxPrice;
             }
 
-            SortingPlumbingService sortingPlumbingService = new SortingPlumbingService();
-
-            var sorter = sortingPlumbingService.GetSorter(pageRequestDto.SortingColumnName);
+            var sorter = GetSorter(pageRequestDto.SortingColumnName);
 
             var pageDto = new PageDTO();
             pageDto.Plumbings = _plumbingRepositories.GetModelsFiltering(predicate, pageRequestDto.PageNumber,
                 pageRequestDto.PageSize, sorter, pageRequestDto.AscendingOrDescending)
                 .ToList();
-            pageDto.Count = _plumbingRepositories.CountPlumbings(predicate);
+            pageDto.Count = _plumbingRepositories.Count(predicate);
             return pageDto;
         }
     }

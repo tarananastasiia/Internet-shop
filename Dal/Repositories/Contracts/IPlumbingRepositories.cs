@@ -7,9 +7,9 @@ namespace Dal.Repositories.Contracts
 {
     public interface IPlumbingRepositories
     {
-        void AddFile(IList<Plumbing> plumping);
+        void Save(IList<Plumbing> plumbing);
         IEnumerable<Plumbing> GetModelsFiltering(Expression<Func<Plumbing, bool>> predicate, int pageNumber, int pageSize,
              Expression<Func<Plumbing, object>> ordering, bool ascendingOrDescending);
-        int CountPlumbings(Expression<Func<Plumbing, bool>> predicate);
+        int Count(Expression<Func<Plumbing, bool>> predicate);
     }
 }

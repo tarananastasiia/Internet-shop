@@ -22,7 +22,7 @@ using Dal.Repositories;
 
 namespace Bll.Services
 {
-    public class MobilePhoneService : IMobilePhoneService
+    public class MobilePhoneService : BaseSortingService<MobilePhones>, IMobilePhoneService
     {
         private readonly IMobilePhoneRepositories _mobilePhoneRepositories;
         private readonly IEpplusImportFile _epplusImport;
@@ -50,7 +50,7 @@ namespace Bll.Services
                 Price = p.Price,
                 Quantity = p.Quantity,
                 Id = p.Id
-            });
+            }).ToList();
 
             _mobilePhoneRepositories.Save(phones);
 
@@ -58,7 +58,6 @@ namespace Bll.Services
 
         public PageDTO GetFiltering(PageRequestDto pageRequestDto)
         {
-
             Expression<Func<MobilePhones, bool>> predicate = x => true;
             if (pageRequestDto.MinPrice == null && pageRequestDto.MaxPrice != null)
             {
@@ -73,15 +72,13 @@ namespace Bll.Services
                 predicate = x => x.Price >= pageRequestDto.MinPrice && x.Price <= pageRequestDto.MaxPrice;
             }
 
-            SortingPhoneService sortingPhoneService = new SortingPhoneService();
-
-            var sorter = sortingPhoneService.GetSorter(pageRequestDto.SortingColumnName);
+            var sorter = GetSorter(pageRequestDto.SortingColumnName);
 
             var pageDto = new PageDTO();
             pageDto.Phones = _mobilePhoneRepositories.GetModelsFiltering(predicate, pageRequestDto.PageNumber,
                 pageRequestDto.PageSize, sorter, pageRequestDto.AscendingOrDescending)
                 .ToList();
-            pageDto.Count = _mobilePhoneRepositories.CountMobiles(predicate);
+            pageDto.Count = _mobilePhoneRepositories.Count(predicate);
             return pageDto;
         }
 

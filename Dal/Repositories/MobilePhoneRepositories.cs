@@ -1,5 +1,6 @@
 ﻿using Dal.Repositories.Contracts;
 using DocumentFormat.OpenXml.Bibliography;
+using EFCore.BulkExtensions;
 using ExelImportUtil;
 using SiteMy.Models;
 using System;
@@ -18,20 +19,10 @@ namespace Dal.Repositories
         public MobilePhoneRepositories(ApplicationContext context) : base(context) { }
 
 
-        public void Save(IEnumerable<MobilePhones> phones)
+        public void Save(IList<MobilePhones> phones)
         {
-            _context.MobilePhones.AddRange(phones);
-            _context.SaveChanges();
+            _context.BulkInsert(phones);
         }
 
-
-        public int CountMobiles(Expression<Func<MobilePhones, bool>> predicate)
-        {
-            var count = _context
-                   .MobilePhones
-                   .Count(predicate);
-
-            return count;
-        }
     }
 }

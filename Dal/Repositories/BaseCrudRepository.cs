@@ -18,6 +18,7 @@ namespace Dal.Repositories
         public virtual IEnumerable<TEntity> GetModelsFiltering(Expression<Func<TEntity, bool>> predicate, int pageNumber, int pageSize,
      Expression<Func<TEntity, object>> ordering, bool ascendingOrDescending)
         {
+
             IQueryable<TEntity> entities = null;
             if (ascendingOrDescending == true)
             {
@@ -39,6 +40,13 @@ namespace Dal.Repositories
                       .Take(pageSize);
             }
             return entities.ToList();
+        }
+
+        public int Count(Expression<Func<TEntity, bool>> predicate)
+        {
+            var count = _context.Set<TEntity>()
+                   .Count(predicate);
+            return count;
         }
     }
 }
