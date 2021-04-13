@@ -13,6 +13,6 @@ namespace Bll.Services.Contracts
     public interface IMobilePhoneService
     {
         void UploadFile(byte[] bin, IFormFile file);
-        PageDTO GetFiltering(PageRequestDto pageRequestDto);
+        PageDTO<MobilePhones> GetFiltering(PageRequestDto pageRequestDto);
     }
 }

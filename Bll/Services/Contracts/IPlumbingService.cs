@@ -1,4 +1,5 @@
-﻿using DTOs.ViewModels;
+﻿using Dal.Models;
+using DTOs.ViewModels;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections;
@@ -10,6 +11,6 @@ namespace Bll.Services.Contracts
     public interface IPlumbingService
     {
         void UploadFile(byte[] bin,IFormFile file);
-        PageDTO GetFiltering(PageRequestDto pageRequestDto);
+        PageDTO<Plumbing> GetFiltering(PageRequestDto pageRequestDto);
     }
 }

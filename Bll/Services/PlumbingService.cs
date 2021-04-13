@@ -13,12 +13,14 @@ using System.Text;
 
 namespace Bll.Services
 {
-    public class PlumbingService: BaseSortingService<Plumbing>, IPlumbingService
+    public class PlumbingService: BaseFilteringService<Plumbing>, IPlumbingService
     {
-        IPlumbingRepositories _plumbingRepositories;
-        public PlumbingService(IPlumbingRepositories plumbingRepositories)
+        private readonly IBaseCrudRepository<Plumbing> _baseCrudRepository;
+        private readonly IEpplusImportFile _epplusImport;
+        public PlumbingService(IEpplusImportFile epplusImport, IBaseCrudRepository<Plumbing> baseCrudRepository) : base(baseCrudRepository)
         {
-            _plumbingRepositories = plumbingRepositories;
+            _epplusImport = epplusImport;
+            _baseCrudRepository = baseCrudRepository;
         }
         public void UploadFile(byte[] bin, IFormFile file)
         {
@@ -38,33 +40,13 @@ namespace Bll.Services
                 Quantity = p.Quantity,
                 Id = p.Id
             }).ToList();
-            _plumbingRepositories.Save(plumbings);
+
+            _baseCrudRepository.Save(plumbings);
         }
 
-        public PageDTO GetFiltering(PageRequestDto pageRequestDto)
+        public PageDTO<Plumbing> GetFiltering(PageRequestDto pageRequestDto)
         {
-            Expression<Func<Plumbing, bool>> predicate = x => true;
-            if (pageRequestDto.MinPrice == null && pageRequestDto.MaxPrice != null)
-            {
-                predicate = x => x.Price <= pageRequestDto.MaxPrice;
-            }
-            if (pageRequestDto.MaxPrice == null && pageRequestDto.MinPrice != null)
-            {
-                predicate = x => x.Price <= pageRequestDto.MinPrice;
-            }
-            if (pageRequestDto.MaxPrice != null && pageRequestDto.MinPrice != null)
-            {
-                predicate = x => x.Price >= pageRequestDto.MinPrice && x.Price <= pageRequestDto.MaxPrice;
-            }
-
-            var sorter = GetSorter(pageRequestDto.SortingColumnName);
-
-            var pageDto = new PageDTO();
-            pageDto.Plumbings = _plumbingRepositories.GetModelsFiltering(predicate, pageRequestDto.PageNumber,
-                pageRequestDto.PageSize, sorter, pageRequestDto.AscendingOrDescending)
-                .ToList();
-            pageDto.Count = _plumbingRepositories.Count(predicate);
-            return pageDto;
+            return BaseGetFiltering(pageRequestDto);
         }
     }
 }

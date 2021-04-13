@@ -22,14 +22,14 @@ using Dal.Repositories;
 
 namespace Bll.Services
 {
-    public class MobilePhoneService : BaseSortingService<MobilePhones>, IMobilePhoneService
+    public class MobilePhoneService : BaseFilteringService<MobilePhones>, IMobilePhoneService
     {
-        private readonly IMobilePhoneRepositories _mobilePhoneRepositories;
+        private readonly IBaseCrudRepository<MobilePhones> _baseCrudRepository; 
         private readonly IEpplusImportFile _epplusImport;
-        public MobilePhoneService(IMobilePhoneRepositories mobilePhoneRepositories, IEpplusImportFile epplusImport)
+        public MobilePhoneService ( IEpplusImportFile epplusImport, IBaseCrudRepository<MobilePhones> baseCrudRepository):base(baseCrudRepository)
         {
-            _mobilePhoneRepositories = mobilePhoneRepositories;
             _epplusImport = epplusImport;
+            _baseCrudRepository= baseCrudRepository;
         }
 
         public void UploadFile(byte[] bin, IFormFile file)
@@ -52,34 +52,13 @@ namespace Bll.Services
                 Id = p.Id
             }).ToList();
 
-            _mobilePhoneRepositories.Save(phones);
+            _baseCrudRepository.Save(phones);
 
         }
 
-        public PageDTO GetFiltering(PageRequestDto pageRequestDto)
+        public PageDTO<MobilePhones> GetFiltering(PageRequestDto pageRequestDto)
         {
-            Expression<Func<MobilePhones, bool>> predicate = x => true;
-            if (pageRequestDto.MinPrice == null && pageRequestDto.MaxPrice != null)
-            {
-                predicate = x => x.Price <= pageRequestDto.MaxPrice;
-            }
-            if (pageRequestDto.MaxPrice == null && pageRequestDto.MinPrice != null)
-            {
-                predicate = x => x.Price <= pageRequestDto.MinPrice;
-            }
-            if (pageRequestDto.MaxPrice != null && pageRequestDto.MinPrice != null)
-            {
-                predicate = x => x.Price >= pageRequestDto.MinPrice && x.Price <= pageRequestDto.MaxPrice;
-            }
-
-            var sorter = GetSorter(pageRequestDto.SortingColumnName);
-
-            var pageDto = new PageDTO();
-            pageDto.Phones = _mobilePhoneRepositories.GetModelsFiltering(predicate, pageRequestDto.PageNumber,
-                pageRequestDto.PageSize, sorter, pageRequestDto.AscendingOrDescending)
-                .ToList();
-            pageDto.Count = _mobilePhoneRepositories.Count(predicate);
-            return pageDto;
+            return BaseGetFiltering(pageRequestDto);
         }
 
     }

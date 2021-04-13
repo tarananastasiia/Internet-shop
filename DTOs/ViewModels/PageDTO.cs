@@ -6,16 +6,14 @@ using System.Text;
 
 namespace DTOs.ViewModels
 {
-    public class PageDTO
+    public class PageDTO<TEntity> where TEntity : class
     {
-        public List<MobilePhones> Phones { get; set; }
-        public List<Plumbing> Plumbings { get; set; }
+        public List<TEntity> WebEntity { get; set; }
         public int Count { get; set; }
         public int MaxPrice { get; set; }
         public PageDTO()
         {
-            Phones = new List<MobilePhones>();
-            Plumbings = new List<Plumbing>();
+            WebEntity = new List<TEntity>();
         }
     }
 }

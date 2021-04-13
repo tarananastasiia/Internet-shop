@@ -57,15 +57,9 @@ namespace SiteMy
 
             services.AddControllersWithViews();
 
-            services.AddTransient<SortingPhoneService>();
-            services.AddControllersWithViews();
-
             services.AddTransient<IPlumbingService, PlumbingService>();
             services.AddControllersWithViews();
 
-            services.AddScoped<IMobilePhoneRepositories, MobilePhoneRepositories>();
-
-            services.AddScoped<IPlumbingRepositories, PlumbingRepositories>();
             services.AddSwaggerGen();
 
         }

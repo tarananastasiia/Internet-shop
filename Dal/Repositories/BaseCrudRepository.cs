@@ -1,4 +1,5 @@
-﻿using SiteMy.Models;
+﻿using EFCore.BulkExtensions;
+using SiteMy.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +15,11 @@ namespace Dal.Repositories
         {
             _context = context;
         }
-
-        public virtual IEnumerable<TEntity> GetModelsFiltering(Expression<Func<TEntity, bool>> predicate, int pageNumber, int pageSize,
+        public void Save(IList<TEntity> entities)
+        {
+            _context.BulkInsert(entities);
+        }
+        public IEnumerable<TEntity> GetModelsSorting(Expression<Func<TEntity, bool>> predicate, int pageNumber, int pageSize,
      Expression<Func<TEntity, object>> ordering, bool ascendingOrDescending)
         {
 
