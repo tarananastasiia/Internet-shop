@@ -1,4 +1,5 @@
-﻿using EFCore.BulkExtensions;
+﻿using Dal.Repositories.Contracts;
+using EFCore.BulkExtensions;
 using SiteMy.Models;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,8 @@ using System.Text;
 
 namespace Dal.Repositories
 {
-    public abstract class BaseCrudRepository<TEntity> where TEntity : class
+    public class BaseCrudRepository<TEntity> : IBaseCrudRepository<TEntity>
+        where TEntity : class
     {
         protected ApplicationContext _context;
         public BaseCrudRepository(ApplicationContext context)
@@ -52,5 +54,6 @@ namespace Dal.Repositories
                    .Count(predicate);
             return count;
         }
+  
     }
 }

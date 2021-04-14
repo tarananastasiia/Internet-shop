@@ -18,6 +18,7 @@ using Bll.Services.Contracts;
 using Dal.Repositories.Contracts;
 using Dal.Repositories;
 using ExelImportUtil;
+using Dal.Models;
 
 namespace SiteMy
 {
@@ -53,11 +54,11 @@ namespace SiteMy
                 .AddEntityFrameworkStores<ApplicationContext>();
 
             services.AddTransient<IEpplusImportFile, EpplusImportFile>();
-            services.AddTransient<IMobilePhoneService, MobilePhoneService>();
+            services.AddTransient<IBaseService<MobilePhones>, MobilePhoneService>();
+            services.AddTransient<IBaseService<Plumbing>, PlumbingService>();
 
-            services.AddControllersWithViews();
+            services.AddTransient(typeof(IBaseCrudRepository<>), typeof(BaseCrudRepository<>));
 
-            services.AddTransient<IPlumbingService, PlumbingService>();
             services.AddControllersWithViews();
 
             services.AddSwaggerGen();

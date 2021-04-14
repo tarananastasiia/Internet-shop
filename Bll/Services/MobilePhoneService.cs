@@ -22,11 +22,11 @@ using Dal.Repositories;
 
 namespace Bll.Services
 {
-    public class MobilePhoneService : BaseFilteringService<MobilePhones>, IMobilePhoneService
+    public class MobilePhoneService : BaseFilteringService<MobilePhones>, IBaseService<MobilePhones>
     {
-        private readonly IBaseCrudRepository<MobilePhones> _baseCrudRepository; 
-        private readonly IEpplusImportFile _epplusImport;
-        public MobilePhoneService ( IEpplusImportFile epplusImport, IBaseCrudRepository<MobilePhones> baseCrudRepository):base(baseCrudRepository)
+        private readonly IBaseCrudRepository<MobilePhones> _baseCrudRepository;
+       private readonly IEpplusImportFile _epplusImport;
+        public MobilePhoneService(IEpplusImportFile epplusImport, IBaseCrudRepository<MobilePhones> baseCrudRepository) : base(baseCrudRepository)
         {
             _epplusImport = epplusImport;
             _baseCrudRepository= baseCrudRepository;
@@ -53,13 +53,11 @@ namespace Bll.Services
             }).ToList();
 
             _baseCrudRepository.Save(phones);
-
         }
 
         public PageDTO<MobilePhones> GetFiltering(PageRequestDto pageRequestDto)
         {
-            return BaseGetFiltering(pageRequestDto);
+           return BaseGetFiltering(pageRequestDto);
         }
-
     }
 }

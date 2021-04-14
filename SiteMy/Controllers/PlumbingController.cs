@@ -12,9 +12,9 @@ namespace SiteMy.Controllers
     [Route("api/plumbing")]
     public class PlumbingController: Controller
     {
-        IPlumbingService _plumbingService;
+        IBaseService<PlumbingWEDto> _plumbingService;
 
-        public PlumbingController( IPlumbingService plumbingService)
+        public PlumbingController(IBaseService<PlumbingWEDto> plumbingService)
         {
             _plumbingService = plumbingService;
         }

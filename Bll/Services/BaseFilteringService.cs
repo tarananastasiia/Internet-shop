@@ -24,6 +24,9 @@ namespace Bll.Services
         }
         public Expression<Func<TEntity, object>> GetSorter(string columnName)
         {
+            if (columnName == null || !dict.ContainsKey(columnName) )
+                return x => x.Id;
+
             Expression<Func<TEntity, object>> sorter = dict[columnName];
             return sorter;
         }

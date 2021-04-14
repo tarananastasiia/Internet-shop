@@ -13,11 +13,11 @@ using System.Text;
 
 namespace Bll.Services
 {
-    public class PlumbingService: BaseFilteringService<Plumbing>, IPlumbingService
+    public class PlumbingService: BaseFilteringService<Plumbing>, IBaseService<Plumbing>
     {
         private readonly IBaseCrudRepository<Plumbing> _baseCrudRepository;
         private readonly IEpplusImportFile _epplusImport;
-        public PlumbingService(IEpplusImportFile epplusImport, IBaseCrudRepository<Plumbing> baseCrudRepository) : base(baseCrudRepository)
+        public PlumbingService(IEpplusImportFile epplusImport, IBaseCrudRepository<Plumbing> baseCrudRepository) :base(baseCrudRepository)
         {
             _epplusImport = epplusImport;
             _baseCrudRepository = baseCrudRepository;
@@ -43,7 +43,6 @@ namespace Bll.Services
 
             _baseCrudRepository.Save(plumbings);
         }
-
         public PageDTO<Plumbing> GetFiltering(PageRequestDto pageRequestDto)
         {
             return BaseGetFiltering(pageRequestDto);

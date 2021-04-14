@@ -19,13 +19,11 @@ namespace SiteMy.Controllers
     [Route("api/mobilePhone")]
     public class MobilePhoneController : Controller
     {
-        IMobilePhoneService _mobilePhoneService;
-        IPlumbingService _plumbingService;
+        IBaseService<MobilePhones> _baseService;
 
-        public MobilePhoneController(IMobilePhoneService mobilePhoneService, IPlumbingService plumbingService)
+        public MobilePhoneController(IBaseService<MobilePhones> baseService)
         {
-            _mobilePhoneService = mobilePhoneService;
-            _plumbingService = plumbingService;
+            _baseService = baseService;
         }
 
         [HttpPost("uploadFile")]
@@ -45,11 +43,11 @@ namespace SiteMy.Controllers
                     var bin = memoryStream.ToArray();
                     if (file.FileName == "Mobile.xlsx")
                     {
-                        _mobilePhoneService.UploadFile(bin, file);
+                        _baseService.UploadFile(bin, file);
                     }
                     if(file.FileName == "Plumbing.xlsx")
                     {
-                        _plumbingService.UploadFile(bin, file);
+                        _baseService.UploadFile(bin, file);
                     }
                 }
             }
@@ -59,7 +57,7 @@ namespace SiteMy.Controllers
         [HttpGet]
         public IActionResult GetPage([FromQuery]PageRequestDto pageRequestDto)
         {
-            var result = _mobilePhoneService.GetFiltering(pageRequestDto);
+            var result = _baseService.GetFiltering(pageRequestDto);
             return Ok(result);
         }
     }
