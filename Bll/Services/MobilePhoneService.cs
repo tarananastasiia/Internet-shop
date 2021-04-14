@@ -25,39 +25,27 @@ namespace Bll.Services
     public class MobilePhoneService : BaseFilteringService<MobilePhones>, IBaseService<MobilePhones>
     {
         private readonly IBaseCrudRepository<MobilePhones> _baseCrudRepository;
-       private readonly IEpplusImportFile _epplusImport;
-        public MobilePhoneService(IEpplusImportFile epplusImport, IBaseCrudRepository<MobilePhones> baseCrudRepository) : base(baseCrudRepository)
+        private readonly IEpplusImportFile _epplusImport;
+
+        private readonly IMapper _mapper;
+
+        public MobilePhoneService(IEpplusImportFile epplusImport, IBaseCrudRepository<MobilePhones> baseCrudRepository, IMapper mapper) : base(baseCrudRepository)
         {
             _epplusImport = epplusImport;
-            _baseCrudRepository= baseCrudRepository;
+            _baseCrudRepository = baseCrudRepository;
+            _mapper = mapper;
         }
 
         public void UploadFile(byte[] bin, IFormFile file)
         {
             var phonesDtos = _epplusImport.GetEntityExel<MobilePhonesExcelDTO>(bin, file);
-
-            var phones = phonesDtos.Select(p => new MobilePhones
-            {
-                Category = p.Category,
-                VendorCode = p.VendorCode,
-                Colour = p.Colour,
-                Name = p.Name,
-                Description = p.Description,
-                LinkToPhotos = p.LinkToPhoto.Select(link => new LinkToPhoto() { Link = link }).ToList(),
-                Manufacturer = p.Manufacturer,
-                ModificationArticle = p.ModificationArticle,
-                Photo = p.Photo,
-                Price = p.Price,
-                Quantity = p.Quantity,
-                Id = p.Id
-            }).ToList();
-
+            var phones = _mapper.Map<List<MobilePhones>>(phonesDtos);
             _baseCrudRepository.Save(phones);
         }
 
         public PageDTO<MobilePhones> GetFiltering(PageRequestDto pageRequestDto)
         {
-           return BaseGetFiltering(pageRequestDto);
+            return BaseGetFiltering(pageRequestDto);
         }
     }
 }

@@ -27,35 +27,33 @@ namespace SiteMy.Controllers
         }
 
         [HttpPost("uploadFile")]
-        public async Task<IActionResult> UploadFile()
+        public async Task<IActionResult> UploadFile(IFormFile file)
         {
-            var files = Request.Form.Files;
 
-            if (files == null || files.Count == 0)
+            if (file == null)
             {
                 return BadRequest();
             }
-            foreach (var file in files)
+
+            using (var memoryStream = new MemoryStream())
             {
-                using (var memoryStream = new MemoryStream())
+                await file.CopyToAsync(memoryStream);
+                var bin = memoryStream.ToArray();
+                if (file.FileName == "Mobile.xlsx")
                 {
-                    await file.CopyToAsync(memoryStream);
-                    var bin = memoryStream.ToArray();
-                    if (file.FileName == "Mobile.xlsx")
-                    {
-                        _baseService.UploadFile(bin, file);
-                    }
-                    if(file.FileName == "Plumbing.xlsx")
-                    {
-                        _baseService.UploadFile(bin, file);
-                    }
+                    _baseService.UploadFile(bin, file);
+                }
+                if (file.FileName == "Plumbing.xlsx")
+                {
+                    _baseService.UploadFile(bin, file);
                 }
             }
+
             return Ok();
         }
 
         [HttpGet]
-        public IActionResult GetPage([FromQuery]PageRequestDto pageRequestDto)
+        public IActionResult GetPage([FromQuery] PageRequestDto pageRequestDto)
         {
             var result = _baseService.GetFiltering(pageRequestDto);
             return Ok(result);

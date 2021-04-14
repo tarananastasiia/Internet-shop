@@ -19,6 +19,7 @@ using Dal.Repositories.Contracts;
 using Dal.Repositories;
 using ExelImportUtil;
 using Dal.Models;
+using Bll;
 
 namespace SiteMy
 {
@@ -60,6 +61,7 @@ namespace SiteMy
             services.AddTransient(typeof(IBaseCrudRepository<>), typeof(BaseCrudRepository<>));
 
             services.AddControllersWithViews();
+            services.AddAutoMapper(x=> x.AddProfile<MappingProfile>());
 
             services.AddSwaggerGen();
 

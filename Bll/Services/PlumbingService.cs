@@ -1,4 +1,5 @@
-﻿using Bll.Services.Contracts;
+﻿using AutoMapper;
+using Bll.Services.Contracts;
 using Dal.Models;
 using Dal.Repositories.Contracts;
 using DTOs.ViewModels;
@@ -17,30 +18,17 @@ namespace Bll.Services
     {
         private readonly IBaseCrudRepository<Plumbing> _baseCrudRepository;
         private readonly IEpplusImportFile _epplusImport;
-        public PlumbingService(IEpplusImportFile epplusImport, IBaseCrudRepository<Plumbing> baseCrudRepository) :base(baseCrudRepository)
+        private readonly IMapper _mapper;
+        public PlumbingService(IEpplusImportFile epplusImport, IBaseCrudRepository<Plumbing> baseCrudRepository, IMapper mapper):base(baseCrudRepository)
         {
             _epplusImport = epplusImport;
             _baseCrudRepository = baseCrudRepository;
+            _mapper = mapper;
         }
         public void UploadFile(byte[] bin, IFormFile file)
         {
-            EpplusImportFile epplusImportFile = new EpplusImportFile();
-            var plumbingDtos = epplusImportFile.GetEntityExel<PlumbingExcelDTO>(bin, file);
-
-            var plumbings = plumbingDtos.Select(p => new Plumbing
-            {
-                Category = p.Category,
-                VendorCode = p.VendorCode,
-                Colour = p.Colour,
-                Name = p.Name,
-                Description = p.Description,
-                Manufacturer = p.Manufacturer,
-                ModificationArticle = p.ModificationArticle,
-                Price = p.Price,
-                Quantity = p.Quantity,
-                Id = p.Id
-            }).ToList();
-
+            var plumbingDtos = _epplusImport.GetEntityExel<PlumbingExcelDTO>(bin, file);
+            var plumbings = _mapper.Map<List<Plumbing>>(plumbingDtos);
             _baseCrudRepository.Save(plumbings);
         }
         public PageDTO<Plumbing> GetFiltering(PageRequestDto pageRequestDto)

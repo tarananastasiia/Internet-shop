@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DTOs.ViewModels
 {
-    public class MobilePhoneWEDto
+    public class MobilePhoneWe
     {
         public int Id { get; set; }
         public int VendorCode { get; set; }
