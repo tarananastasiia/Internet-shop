@@ -14,6 +14,7 @@ namespace SiteMy.Controllers
 {
     public class BaseController<TEntity> : Controller where TEntity : class
     {
+        public int a;
         IBaseService<TEntity> _baseService;
 
         public BaseController(IBaseService<TEntity> baseService)
