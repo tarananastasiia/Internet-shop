@@ -55,8 +55,8 @@ namespace SiteMy
                 .AddEntityFrameworkStores<ApplicationContext>();
 
             services.AddTransient<IEpplusImportFile, EpplusImportFile>();
-            services.AddTransient<IBaseService<MobilePhones>, MobilePhoneService>();
-            services.AddTransient<IBaseService<Plumbing>, PlumbingService>();
+
+            services.AddSingleton(typeof(IBaseService<>), typeof(BaseFilteringService<>));
 
             services.AddTransient(typeof(IBaseCrudRepository<>), typeof(BaseCrudRepository<>));
 

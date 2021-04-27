@@ -16,29 +16,29 @@ using Bll.Services.Contracts;
 
 namespace ExelImportUtil
 {
-    public class EpplusImportFile : IEpplusImportFile
+    public  class EpplusImportFile : IEpplusImportFile
     {
-        public List<T> GetEntityExel<T>(byte[] bin, IFormFile files) where T : new()
+        public List<TEntity> GetEntityExel<TEntity>(byte[] bin, IFormFile files) where TEntity : new()
         {
             ExcelPackage.LicenseContext = LicenseContext.Commercial;
-            var properties = typeof(T).GetProperties();
+            var properties = typeof(TEntity).GetProperties();
             var propsWithAttribute = properties.Where(p => p.IsDefined(typeof(ColumnNameAttribute)));
 
             using (MemoryStream stream = new MemoryStream(bin))
             using (ExcelPackage excelPackage = new ExcelPackage(stream))
             {
-                ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets[typeof(T).GetCustomAttribute<SheetAttribute>().SheetName];
+                ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets[typeof(TEntity).GetCustomAttribute<SheetAttribute>().SheetName];
                 Dictionary<int, PropertyInfo> dictColumnAndProps = propsWithAttribute.ToDictionary(p =>
                 {
                     var columnNumber = NumberColumn(p.GetCustomAttribute<ColumnNameAttribute>().Column, worksheet);
                     return columnNumber;
                 }, p => p);
 
-                List<T> category = new List<T>();
+                List<TEntity> category = new List<TEntity>();
 
                 for (int i = worksheet.Dimension.Start.Row + 1; i <= worksheet.Dimension.End.Row; i++)
                 {
-                    T dto = new T();
+                    TEntity dto = new TEntity();
 
                     foreach (var keyValue in dictColumnAndProps)
                     {

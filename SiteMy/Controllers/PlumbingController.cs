@@ -1,10 +1,7 @@
 ﻿using Bll.Services.Contracts;
+using Dal.Models;
 using DTOs.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SiteMy.Controllers
 {
@@ -12,16 +9,16 @@ namespace SiteMy.Controllers
     [Route("api/plumbing")]
     public class PlumbingController: Controller
     {
-        IBaseService<PlumbingWEDto> _plumbingService;
+        IBaseService<Plumbing> _plumbingService;
 
-        public PlumbingController(IBaseService<PlumbingWEDto> plumbingService)
+        public PlumbingController(IBaseService<Plumbing> plumbingService)
         {
             _plumbingService = plumbingService;
         }
         [HttpGet]
         public IActionResult GetPage([FromQuery] PageRequestDto pageRequestDto)
         {
-            var result = _plumbingService.GetFiltering(pageRequestDto);
+            var result = _plumbingService.BaseGetFiltering(pageRequestDto);
             return Ok(result);
         }
     }

@@ -4,13 +4,16 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace Bll.Services.Contracts
 {
-    public interface IBaseService<TEntity> where TEntity:class
+    public interface IBaseService<TEntity> where TEntity : class
     {
-        void UploadFile(byte[] bin,IFormFile file);
-        PageDTO<TEntity> GetFiltering(PageRequestDto pageRequestDto);
+        Expression<Func<TEntity, object>> GetSorter(string columnName);
+        PageDTO<TEntity> BaseGetFiltering(PageRequestDto pageRequestDto);
+        void UploadFile<T>(byte[] bin, IFormFile file) where T : new();
+
     }
 }

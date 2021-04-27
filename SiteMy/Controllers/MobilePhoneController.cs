@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bll.Services;
 using Bll.Services.Contracts;
+using Dal.Models;
 using DTOs.ViewModels;
 using ExelImportUtil;
 using Microsoft.AspNetCore.Cors;
@@ -17,46 +18,30 @@ namespace SiteMy.Controllers
 {
     [ApiController]
     [Route("api/mobilePhone")]
-    public class MobilePhoneController : Controller
+    public class MobilePhoneController : BaseController<MobilePhones>
     {
-        IBaseService<MobilePhones> _baseService;
-
-        public MobilePhoneController(IBaseService<MobilePhones> baseService)
+        public MobilePhoneController(IBaseService<MobilePhones> baseService) : base(baseService)
         {
-            _baseService = baseService;
         }
 
         [HttpPost("uploadFile")]
         public async Task<IActionResult> UploadFile(IFormFile file)
         {
-
-            if (file == null)
+            if (file.FileName == "Mobile.xlsx")
             {
-                return BadRequest();
+                Upload<MobilePhones>(file);
             }
-
-            using (var memoryStream = new MemoryStream())
+            if (file.FileName == "Plumbing.xlsx")
             {
-                await file.CopyToAsync(memoryStream);
-                var bin = memoryStream.ToArray();
-                if (file.FileName == "Mobile.xlsx")
-                {
-                    _baseService.UploadFile(bin, file);
-                }
-                if (file.FileName == "Plumbing.xlsx")
-                {
-                    _baseService.UploadFile(bin, file);
-                }
+                Upload<Plumbing>(file);
             }
-
             return Ok();
         }
 
         [HttpGet]
         public IActionResult GetPage([FromQuery] PageRequestDto pageRequestDto)
         {
-            var result = _baseService.GetFiltering(pageRequestDto);
-            return Ok(result);
+            Page(pageRequestDto);
         }
     }
 }
