@@ -23,7 +23,7 @@ namespace SiteMy.Controllers
         public MobilePhoneController(IBaseService<MobilePhones> baseService) : base(baseService)
         {
         }
-
+        
         [HttpPost("uploadFile")]
         public async Task<IActionResult> UploadFile(IFormFile file)
         {

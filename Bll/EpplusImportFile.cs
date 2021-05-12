@@ -54,7 +54,7 @@ namespace ExelImportUtil
                             worksheet.Cells[i, keyValue.Key].AddComment(errors.Message, "Настя");
                             worksheet.Cells[i, keyValue.Key].Style.Fill.PatternType = ExcelFillStyle.Solid;
                             worksheet.Cells[i, keyValue.Key].Style.Fill.BackgroundColor.SetColor(Color.Red);
-                            FileInfo file = new FileInfo("C:/Users/vladyslav.haliaha/Desktop/Catalog/" + files.FileName);
+                            FileInfo file = new FileInfo("C:/Users/Anastasiia/Desktop/MyCatalog" + files.FileName);
                             excelPackage.SaveAs(file);
                         }
                     }
